@@ -1,0 +1,7 @@
+INFO     automation:base_test.py:16 开始测试用例执行
+ERROR    automation:login_page.py:31 打开登录页面失败: 'function' object has no attribute 'get'
+ERROR    automation:login_page.py:40 无法截图
+ERROR    automation:login_page.py:45 关闭浏览器失败: type object 'DriverManager' has no attribute 'quit_driver'
+ERROR    automation:login_page.py:31 登录过程失败: 打开登录页面失败: 'function' object has no attribute 'get'
+ERROR    automation:login_page.py:40 无法截图
+ERROR    automation:login_page.py:45 关闭浏览器失败: type object 'DriverManager' has no attribute 'quit_driver'

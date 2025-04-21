@@ -1,0 +1,2 @@
+INFO     automation:base_test.py:16 开始测试用例执行
+WARNING  selenium.webdriver.common.selenium_manager:selenium_manager.py:138 The chromedriver version (113.0.5672.63) detected in PATH at D:\Python39\chromedriver.exe might not be compatible with the detected chrome version (134.0.6998.177); currently, chromedriver 134.0.6998.165 is recommended for chrome 134.*, so it is advised to delete the driver in PATH and retry

@@ -1,0 +1,11 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"
+        测试卷宗检索基本流程：
+        1. 点击卷宗检索
+        2. 输入搜索内容
+        3. 点击搜索
+        4. 预览卷宗
+        5. 关闭预览
+        6. 勾选仅显示文件名
+        7. 关闭搜索
+        ","10011","测试卷宗检索基本流程","tests","Fri Apr 18 15:37:59 CST 2025","passed","Fri Apr 18 15:38:09 CST 2025","TestArchivesSearch","test_archives_search","",""
