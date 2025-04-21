@@ -19,7 +19,7 @@ class AssistedReadLocators:
     # 庭审笔录相关元素
     COURT_RECORD = (By.XPATH, "//span[@class='ant-tree-title']/span[text()='庭审笔录1']")
     SET_RECORD = (By.XPATH, "//span[@class='ant-tree-title']/span[text()='庭审笔录1']/following-sibling::i[2]")
-    CANCEL_SET_RECORD = (By.CSS_SELECTOR, "svg[data-v-19fbe780][data-v-2fe3671f].plusType.svg-icon")
+    CANCEL_SET_RECORD = (By.CSS_SELECTOR, "svg[data-v-19fbe780][data-v-3f752b24].plusType.svg-icon")
     CONFIRM_CANCEL_BUTTON = (By.CSS_SELECTOR, "button.ant-btn.ant-btn-primary.ant-btn-sm")
 
     # 处理意见相关元素
