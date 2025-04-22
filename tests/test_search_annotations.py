@@ -1,13 +1,15 @@
+import time
+
 import allure
 import pytest
-from common.annotations_utils import SearchAnnotationsUtils
+from common.search_annotations_utils import SearchAnnotationsUtils
 from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()
 
 
-@allure.epic("案件管理系统")
+@allure.epic("法官AI助手")
 @allure.feature("检索批注功能")
 class TestSearchAnnotations(BaseTest):
     """检索批注测试类"""
@@ -90,6 +92,65 @@ class TestSearchAnnotations(BaseTest):
 
         except Exception as e:
             logger.error(f"批注删除测试失败: {str(e)}")
+            raise
+
+    @allure.story("法条管理完整流程")
+    @allure.title("测试法条完整生命周期")
+    def test_law_lifecycle(self, driver):
+        """
+        测试法条的完整生命周期：
+        1. 引用法条
+        2. 预览法条
+        3. 编辑法条
+        4. 删除法条
+        """
+        try:
+            # 1. 引用法条
+            with allure.step("步骤1：引用法条"):
+                self.annotations.cite_law(
+                    text_to_select="服务器",
+                    search_keyword="诉讼法"
+                )
+
+                time.sleep(1)
+
+            # 2. 预览法条
+            with allure.step("步骤2：预览法条"):
+                self.annotations.preview_law()
+
+                time.sleep(1)
+
+            # 3. 编辑法条
+            with allure.step("步骤3：编辑法条"):
+                self.annotations.edit_law(
+                    new_text="中华人民共和国民事诉讼法修改"
+                )
+
+                time.sleep(1)
+
+            # 4. 删除法条
+            with allure.step("步骤4：删除法条"):
+                self.annotations.delete_law()
+
+
+            logger.info("法条完整生命周期测试完成")
+
+        except Exception as e:
+            logger.error(f"法条生命周期测试失败: {str(e)}")
+            raise
+
+    @allure.story("页面跳转功能")
+    @allure.title("测试页面跳转")
+    def test_page_navigation(self, driver):
+        """测试页面跳转功能"""
+        try:
+            with allure.step("执行页面跳转操作"):
+                self.annotations.page_navigation()
+
+
+        except Exception as e:
+            logger.error(f"页面跳转测试失败: {str(e)}")
+
             raise
 
 

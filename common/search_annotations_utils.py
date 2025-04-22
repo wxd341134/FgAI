@@ -1,14 +1,15 @@
 import time
 import allure
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
-from pages.annotations_page import SearchAnnotationsPage
+from pages.search_annotations_page import SearchAnnotationsPage
 from utils.logger import Logger
+from utils.JStextSelection import JSTextSelector
 
 logger = Logger().get_logger()
-
 
 class SearchAnnotationsUtils:
     """检索批注工具类"""
@@ -104,76 +105,7 @@ class SearchAnnotationsUtils:
         Args:
             text: 要选中的文本
         """
-        try:
-            logger.info(f"尝试使用JS选中文本: {text}")
-
-            js_script = """
-            function selectText(searchText) {
-                const textNodes = [];
-
-                // 递归查找文本节点
-                function findTextNodes(node) {
-                    if (node.nodeType === 3) {
-                        if (node.textContent.includes(searchText)) {
-                            textNodes.push(node);
-                        }
-                    } else {
-                        for (let child of node.childNodes) {
-                            findTextNodes(child);
-                        }
-                    }
-                }
-
-                findTextNodes(document.body);
-
-                if (textNodes.length === 0) {
-                    return false;
-                }
-
-                // 使用第一个匹配的文本节点
-                const textNode = textNodes[0];
-                const range = document.createRange();
-                const content = textNode.textContent;
-                const startIndex = content.indexOf(searchText);
-
-                // 设置选区
-                range.setStart(textNode, startIndex);
-                range.setEnd(textNode, startIndex + searchText.length);
-
-                // 应用选区
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-
-                // 滚动到选区
-                const element = textNode.parentElement;
-                element.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-
-                return true;
-            }
-
-            return selectText(arguments[0]);
-            """
-
-            result = self.driver.execute_script(js_script, text)
-
-            if not result:
-                raise Exception(f"未找到文本: {text}")
-
-            time.sleep(1)  # 等待选中效果
-            logger.info(f"成功选中文本: {text}")
-
-        except Exception as e:
-            logger.error(f"选中文本失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "选中文本失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
+        return JSTextSelector.select_text(self.driver, text)
 
     @allure.step("执行检索批注")
     def add_annotation(self, text_to_select="如下文档", annotation_text="123456"):
@@ -202,7 +134,7 @@ class SearchAnnotationsUtils:
 
             # 3. 使用JS选中文本
             with allure.step(f"选中文本: {text_to_select}"):
-                self.select_text_by_js(text_to_select)
+                JSTextSelector.select_text(self.driver, text_to_select)
                 time.sleep(1)
 
             # 4. 点击批注按钮
@@ -348,30 +280,251 @@ class SearchAnnotationsUtils:
             )
             raise
 
-    @allure.step("添加并编辑批注")
-    def add_and_edit_annotation(self, text_to_select="如下文档", initial_text="123456", edited_text="123456修改"):
+    @allure.step("引用法条")
+    def cite_law(self, text_to_select="服务器", search_keyword="诉讼法"):
         """
-        添加批注并编辑
+        引用法条
         Args:
             text_to_select: 要选中的文本
-            initial_text: 初始批注内容
-            edited_text: 编辑后的批注内容
+            search_keyword: 搜索关键词
         """
         try:
-            # 先添加批注
-            self.add_annotation(text_to_select, initial_text)
-            time.sleep(1)  # 等待添加完成
+            logger.info("开始执行引用法条流程...")
 
-            # 然后编辑批注
-            self.edit_annotation(edited_text)
+            # 1. 选中文本
+            with allure.step(f"选中文本: {text_to_select}"):
+                JSTextSelector.select_text(self.driver, text_to_select)
+                time.sleep(1)
 
-            logger.info("添加并编辑批注流程执行完成")
+            # 2. 点击检索
+            with allure.step("点击检索"):
+                self.click_element(
+                    SearchAnnotationsPage.SEARCH_LINK,
+                    "检索链接"
+                )
+                time.sleep(1)
+
+            # 3. 输入搜索内容
+            with allure.step(f"输入搜索内容: {search_keyword}"):
+                self.input_text(
+                    SearchAnnotationsPage.SEARCH_INPUT,
+                    search_keyword,
+                    "搜索输入框"
+                )
+
+            # 4. 点击搜索按钮
+            with allure.step("点击搜索"):
+                self.click_element(
+                    SearchAnnotationsPage.SEARCH_BUTTON,
+                    "搜索按钮"
+                )
+
+            # 5. 引用法条
+            with allure.step("引用指定法条"):
+                self.click_element(
+                    SearchAnnotationsPage.LAW_REFERENCE,
+                    "法条引用按钮"
+                )
+
+            logger.info("引用法条流程执行完成")
 
         except Exception as e:
-            logger.error(f"添加并编辑批注失败: {str(e)}")
+            logger.error(f"引用法条失败: {str(e)}")
             allure.attach(
                 self.driver.get_screenshot_as_png(),
-                "添加并编辑批注失败截图",
+                "引用法条失败截图",
                 allure.attachment_type.PNG
             )
             raise
+
+    @allure.step("预览法条")
+    def preview_law(self):
+        """预览法条"""
+        try:
+            logger.info("开始执行预览法条流程...")
+
+            # 1. 点击预览
+            with allure.step("点击预览"):
+                self.click_element(
+                    SearchAnnotationsPage.PREVIEW_LAW,
+                    "法条预览链接"
+                )
+                time.sleep(1)
+
+            # 2. 关闭预览
+            with allure.step("关闭预览"):
+                self.click_element(
+                    SearchAnnotationsPage.CLOSE_PREVIEW,
+                    "关闭预览按钮"
+                )
+
+            logger.info("预览法条流程执行完成")
+
+        except Exception as e:
+            logger.error(f"预览法条失败: {str(e)}")
+            allure.attach(
+                self.driver.get_screenshot_as_png(),
+                "预览法条失败截图",
+                allure.attachment_type.PNG
+            )
+            raise
+
+    @allure.step("编辑法条")
+    def edit_law(self, new_text="中华人民共和国民事诉讼法修改"):
+        """
+        编辑法条
+        Args:
+            new_text: 新的法条内容
+        """
+        try:
+            logger.info("开始执行编辑法条流程...")
+
+            # 1. 点击编辑按钮
+            with allure.step("点击编辑按钮"):
+                self.click_element(
+                    SearchAnnotationsPage.EDIT_LAW_BUTTON,
+                    "编辑法条按钮"
+                )
+                time.sleep(1)
+
+            # 2. 输入新内容
+            with allure.step(f"输入新内容: {new_text}"):
+                self.input_text(
+                    SearchAnnotationsPage.EDIT_LAW_INPUT,
+                    new_text,
+                    "法条编辑框"
+                )
+
+            # 3. 点击标签下拉框
+            with allure.step("点击标签下拉框"):
+                self.click_element(
+                    SearchAnnotationsPage.TAG_DROPDOWN,
+                    "标签下拉框"
+                )
+                time.sleep(0.5)
+
+            # 4. 选择争议焦点标签
+            with allure.step("选择争议焦点标签"):
+                self.click_element(
+                    SearchAnnotationsPage.DISPUTE_FOCUS_OPTION,
+                    "争议焦点选项"
+                )
+
+            # 5. 点击确定
+            with allure.step("确认编辑"):
+                self.click_element(
+                    SearchAnnotationsPage.CONFIRM_BUTTON,
+                    "确认按钮"
+                )
+
+            logger.info("编辑法条流程执行完成")
+
+        except Exception as e:
+            logger.error(f"编辑法条失败: {str(e)}")
+            allure.attach(
+                self.driver.get_screenshot_as_png(),
+                "编辑法条失败截图",
+                allure.attachment_type.PNG
+            )
+            raise
+
+    @allure.step("删除法条")
+    def delete_law(self):
+        """删除法条"""
+        try:
+            logger.info("开始执行删除法条流程...")
+
+            # 1. 点击删除按钮
+            with allure.step("点击删除按钮"):
+                self.click_element(
+                    SearchAnnotationsPage.DELETE_LAW_BUTTON,
+                    "删除法条按钮"
+                )
+                time.sleep(0.5)
+
+            # 2. 确认删除
+            with allure.step("确认删除"):
+                self.click_element(
+                    SearchAnnotationsPage.CONFIRM_DELETE,
+                    "确认删除按钮"
+                )
+
+            logger.info("删除法条流程执行完成")
+
+        except Exception as e:
+            logger.error(f"删除法条失败: {str(e)}")
+            allure.attach(
+                self.driver.get_screenshot_as_png(),
+                "删除法条失败截图",
+                allure.attachment_type.PNG
+            )
+            raise
+
+    @allure.step("页面跳转操作")
+    def page_navigation(self):
+        """执行页面跳转和文本操作"""
+        try:
+            logger.info("开始执行页面跳转流程...")
+
+            # 1. 点击打开侧边栏
+            with allure.step("打开侧边栏"):
+                self.click_element(
+                    SearchAnnotationsPage.SIDEBAR_TOGGLE,
+                    "侧边栏切换按钮"
+                )
+                time.sleep(1)
+
+            # 2. 点击选中第3页
+            with allure.step("选择第3页"):
+                self.click_element(
+                    SearchAnnotationsPage.PAGE_THREE,
+                    "第3页缩略图"
+                )
+                time.sleep(2)  # 等待页面加载
+
+            # 3. 选择文本"导入镜像"
+            with allure.step("选中文本'导入镜像'"):
+                JSTextSelector.select_text(self.driver, "导入镜像")
+                time.sleep(1)
+
+            # 4. 点击复制文本
+            with allure.step("点击复制文本"):
+                self.click_element(
+                    SearchAnnotationsPage.COPY_TEXT_BUTTON,
+                    "复制文本按钮"
+                )
+                time.sleep(1)
+
+            # 5. 跳转到第10页
+            with allure.step("跳转到第10页"):
+                # 点击页数输入框
+                page_input = self.wait.until(
+                    EC.presence_of_element_located(SearchAnnotationsPage.PAGE_INPUT)
+                )
+                page_input.click()
+                time.sleep(1)
+
+                # 清除现有内容并输入10
+                page_input.clear()
+                page_input.send_keys("10")
+                page_input.send_keys(Keys.RETURN)
+                time.sleep(3)  # 等待页面加载
+
+            # 6. 关闭侧边栏
+            with allure.step("关闭侧边栏"):
+                self.click_element(
+                    SearchAnnotationsPage.SIDEBAR_TOGGLE,
+                    "侧边栏切换按钮"
+                )
+
+            logger.info("页面跳转流程执行完成")
+
+        except Exception as e:
+            logger.error(f"页面跳转操作失败: {str(e)}")
+            allure.attach(
+                self.driver.get_screenshot_as_png(),
+                "页面跳转失败截图",
+                allure.attachment_type.PNG
+            )
+            raise
+
