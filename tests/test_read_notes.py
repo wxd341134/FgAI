@@ -188,7 +188,7 @@ class TestReadNotes(BaseTest):
         try:
             with allure.step("选中文本并点击AI智能问答和构成要件"):
                 # 选中文本并使用AI智能问答
-                self.read_notes.select_text_and_use_ai_qa("全国银行间同业拆借")
+                self.read_notes.select_text_and_use_ai_qa("万家新城内")
                 self.take_screenshot("AI智能问答和构成要件")
 
             with allure.step("验证弹框已关闭"):
