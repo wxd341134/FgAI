@@ -9,4 +9,4 @@ gen
 allure-report/*
 allure-results/*
 tests/allure-results/*
-.log
+logs/.log

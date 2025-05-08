@@ -1,6 +1,7 @@
 import time
 import allure
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.case_analysis_page import CaseAnalysisPage
@@ -218,4 +219,94 @@ class CaseAnalysisUtils:
 
         except Exception as e:
             logger.error(f"完善事实描述失败: {str(e)}")
+            raise
+
+    @allure.step("操作庭审笔录")
+    def handle_court_record(self):
+        """处理庭审笔录相关操作"""
+        try:
+            logger.info("开始庭审笔录操作...")
+
+            # 1. 打开庭审笔录
+            with allure.step("点击庭审笔录"):
+                self.click_element(CaseAnalysisPage.COURT_RECORD, "庭审笔录")
+                time.sleep(1)
+
+            # 2. 显示侧边栏
+            with allure.step("点击笔录侧边栏"):
+                self.click_element(CaseAnalysisPage.SIDEBAR_TOGGLE, "侧边栏")
+                time.sleep(1.5)
+
+            # 3. 跳转到第三页
+            with allure.step("点击第3页"):
+                self.click_element(CaseAnalysisPage.PAGE_THREE, "第3页")
+                time.sleep(1)
+
+            # 4. 输入页码并跳转
+            with allure.step("输入页码"):
+                page_input = self.wait.until(
+                    EC.presence_of_element_located(CaseAnalysisPage.PAGE_INPUT)
+                )
+                page_input.clear()
+                page_input.send_keys("5")
+                page_input.send_keys(Keys.ENTER)
+                time.sleep(1)
+
+            # 5. 切换视图
+            with allure.step("切换到双页视图"):
+                self.click_element(CaseAnalysisPage.VIEW_BUTTON, "视图按钮")
+                time.sleep(1)
+                self.click_element(CaseAnalysisPage.DOUBLE_PAGE_VIEW, "双页视图")
+                time.sleep(1)
+
+            # 6-7. 适配页面
+            with allure.step("调整页面适配"):
+                self.click_element(CaseAnalysisPage.FIT_WIDTH, "适合页宽")
+                time.sleep(1)
+                self.click_element(CaseAnalysisPage.FIT_HEIGHT, "适合页高")
+                time.sleep(1)
+
+            # 8-9. 缩放操作
+            with allure.step("执行缩放操作"):
+                self.click_element(CaseAnalysisPage.ZOOM_OUT, "缩小")
+                time.sleep(1)
+                self.click_element(CaseAnalysisPage.ZOOM_IN, "放大")
+                time.sleep(1)
+
+            # 10-11. 旋转操作
+            with allure.step("执行旋转操作"):
+                self.click_element(CaseAnalysisPage.ROTATE_CLOCKWISE, "顺时针旋转")
+                time.sleep(1)
+                self.click_element(CaseAnalysisPage.ROTATE_COUNTERCLOCKWISE, "逆时针旋转")
+                time.sleep(1)
+
+
+            # 13-14. 全屏操作
+            with allure.step("执行全屏操作"):
+                self.click_element(CaseAnalysisPage.FULLSCREEN_BUTTON, "全屏")
+                time.sleep(1)
+                self.click_element(CaseAnalysisPage.EXIT_FULLSCREEN, "退出全屏")
+                time.sleep(1)
+
+            # 12. 下载操作
+            with allure.step("执行下载操作"):
+                self.click_element(CaseAnalysisPage.DOWNLOAD_BUTTON, "下载按钮")
+                time.sleep(1)
+                self.click_element(CaseAnalysisPage.PDF_DOWNLOAD, "PDF下载")
+                time.sleep(1)
+
+            # 15. 关闭侧边栏
+            with allure.step("关闭侧边栏"):
+                self.click_element(CaseAnalysisPage.SIDEBAR_TOGGLE, "关闭侧边栏")
+                time.sleep(1)
+
+            logger.info("庭审笔录操作完成")
+
+        except Exception as e:
+            logger.error(f"庭审笔录操作失败: {str(e)}")
+            allure.attach(
+                self.driver.get_screenshot_as_png(),
+                "庭审笔录操作失败截图",
+                allure.attachment_type.PNG
+            )
             raise

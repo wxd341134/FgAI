@@ -44,3 +44,31 @@ class CaseAnalysisPage:
     # 意见输入和确认
     OPINION_INPUT = (By.XPATH, "//textarea[@class='ant-input']")
     CONFIRM_BUTTON = (By.CSS_SELECTOR, "div[value='true'] button:nth-child(1)")
+
+    # 庭审笔录相关元素
+    COURT_RECORD = (By.XPATH, "//div[@class='left-area ant-row']//div[text()='庭审笔录']")
+    SIDEBAR_TOGGLE = (By.XPATH, "//div[@class='page-control']//*[name()='svg']")
+    PAGE_THREE = (By.XPATH, "//div[@class='scrolling-document pdf-preview']//div[text()=' 3 ']")
+    PAGE_INPUT = (By.XPATH, "//div[@class='page-control']//input")
+
+    # 视图控制
+    VIEW_BUTTON = (By.XPATH, "//i[@aria-label='图标: profile']//*[name()='svg']")
+    DOUBLE_PAGE_VIEW = (By.XPATH, "//li[contains(text(),'双页视图')]")
+    FIT_WIDTH = (By.XPATH, "//i[@aria-label='图标: column-width']//*[name()='svg']")
+    FIT_HEIGHT = (By.XPATH, "//*[name()='path' and contains(@d,'M840 836H1')]")
+
+    # 缩放和旋转
+    ZOOM_OUT = (By.XPATH, "//i[@aria-label='图标: zoom-out']//*[name()='svg']")
+    ZOOM_IN = (By.XPATH, "//i[@aria-label='图标: zoom-in']//*[name()='svg']")
+    ROTATE_CLOCKWISE = (By.XPATH, "//i[@aria-label='图标: redo']//*[name()='svg']")
+    ROTATE_COUNTERCLOCKWISE = (By.XPATH, "//i[@aria-label='图标: undo']//*[name()='svg']")
+
+    # 其他控制
+    DOWNLOAD_BUTTON = (By.XPATH, "//i[@aria-label='图标: download']//*[name()='svg']")
+    PDF_DOWNLOAD = (By.XPATH, "//li[contains(text(),'PDF下载')]")
+    FULLSCREEN_BUTTON = (By.XPATH, "//i[@aria-label='图标: fullscreen']//*[name()='svg']")  #全屏操作
+    EXIT_FULLSCREEN = (By.XPATH, "//i[@class='anticon anticon-fullscreen-exit']")  #退出全屏
+
+
+
+
