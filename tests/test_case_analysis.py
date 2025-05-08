@@ -73,7 +73,7 @@ class TestCaseAnalysis(BaseTest):
     def test_court_record(self):
         """测试庭审笔录功能"""
         # 进入案件分析页面
-        self.case_analysis.enter_case_analysis()
+        # self.case_analysis.enter_case_analysis()
         try:
             with allure.step("执行庭审笔录操作"):
                 self.case_analysis.handle_court_record()
