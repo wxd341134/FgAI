@@ -23,7 +23,7 @@ class CaseAnalysisPage:
     COLLAPSE_MORE = (By.XPATH, "//div[@id='courtOpinion']//span[@class='s-btn'][contains(text(),'收起更多')]")
 
     # 完善事实描述相关
-    EDIT_TRANSFER_RECEIPT = (By.XPATH, "//p[text()='2. 转账凭证截图 ']/i")
+    EDIT_TRANSFER_RECEIPT = (By.XPATH, "//p[text()='2. 收据（借据） ']/i")
     DESCRIPTION_INPUT = (By.XPATH, "//textarea[@class='custom-textarea ant-input']")
     SAVE_BUTTON = (By.XPATH, "//body//div//button[2]")
 
@@ -33,9 +33,9 @@ class CaseAnalysisPage:
 
     # 证据状态元素
     EVIDENCE_AGREE_STATUS = (
-    By.XPATH, "//p[text()='转账凭证截图']/ancestor::div[1]/p/i[@class='custom-icon-a rentong']")
+    By.XPATH, "//p[text()='入股合同彩色复印件']/ancestor::div[1]/p/i[@class='custom-icon-a rentong']")
     EVIDENCE_DISAGREE_STATUS = (
-    By.XPATH, "//p[text()='转账凭证截图']/ancestor::div[1]/p/i[@class='custom-icon-a quxiao']")
+    By.XPATH, "//p[text()='入股合同彩色复印件']/ancestor::div[1]/p/i[@class='custom-icon-a quxiao']")
 
     # 认同/不认同选项
     AGREE_RADIO = (By.XPATH, "//label[.//span[text()='认同']]")
@@ -55,7 +55,7 @@ class CaseAnalysisPage:
     VIEW_BUTTON = (By.XPATH, "//i[@aria-label='图标: profile']//*[name()='svg']")
     DOUBLE_PAGE_VIEW = (By.XPATH, "//li[contains(text(),'双页视图')]")
     FIT_WIDTH = (By.XPATH, "//i[@aria-label='图标: column-width']//*[name()='svg']")
-    FIT_HEIGHT = (By.XPATH, "//*[name()='path' and contains(@d,'M840 836H1')]")
+    FIT_HEIGHT = (By.CSS_SELECTOR, "svg[viewBox='64 64 896 896'][data-icon='column-height']")
 
     # 缩放和旋转
     ZOOM_OUT = (By.XPATH, "//i[@aria-label='图标: zoom-out']//*[name()='svg']")

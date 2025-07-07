@@ -9,7 +9,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("案件管理系统")
+@allure.epic("阅卷笔记")
 @allure.feature("阅卷笔记模块")
 class TestReadNotes(BaseTest):
 

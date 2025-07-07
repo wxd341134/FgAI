@@ -39,8 +39,8 @@ class TestDataManager:
 
 
 
-@allure.epic("法官AI系统测试")
-@allure.feature("案件管理功能")
+@allure.epic("案件列表")
+@allure.feature("案件管理")
 class TestCaseManagement(BaseTest):
     """案件管理测试类"""
 

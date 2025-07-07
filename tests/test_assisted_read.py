@@ -10,8 +10,8 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("FGAI自动化测试")
-@allure.feature("辅助阅卷")
+@allure.epic("辅助阅卷")
+@allure.feature("辅助阅卷模块")
 class TestAssistedReading(BaseTest):
     """辅助阅卷测试类"""
 
@@ -176,6 +176,7 @@ class TestAssistedReading(BaseTest):
             logger.info(f"截图成功: {name}")
         except Exception as e:
             logger.error(f"截图失败 {name}: {str(e)}")
+
 
 
 if __name__ == "__main__":

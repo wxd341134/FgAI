@@ -12,7 +12,7 @@ logger = Logger().get_logger()
 class TestPersonalCenter(BaseTest):
     """个人中心功能测试类"""
 
-    @allure.story("完整测试流程")
+    @allure.story("报表统计、字体下载、修改密码")
     def test_personal_center_workflow(self):
         """测试个人中心完整流程"""
         try:

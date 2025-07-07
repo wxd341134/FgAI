@@ -6,7 +6,7 @@ from utils.logger import Logger
 
 logger = Logger().get_logger()
 
-@allure.epic("案件管理系统")
+@allure.epic("案件分析")
 @allure.feature("案件分析功能")
 class TestCaseAnalysis(BaseTest):
     """案件分析测试类"""

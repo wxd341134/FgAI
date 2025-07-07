@@ -7,7 +7,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("案件管理系统")
+@allure.epic("辅助阅卷")
 @allure.feature("卷宗检索模块")
 class TestArchivesSearch(BaseTest):
     """卷宗检索测试类"""

@@ -5,7 +5,7 @@ class SearchAnnotationsPage:
     """检索批注页面元素定位"""
 
     # 辅助阅卷按钮
-    ASSIST_READ_BUTTON = (By.XPATH, "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[1]")
+    ASSIST_READ_BUTTON = (By.XPATH, "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[2]/td[1]/div/i[1]")  #列表第二个案件
 
     # AI助手安装文档链接
     AI_ASSISTANT_DOC = (By.XPATH, "//span[@class='ant-tree-title']//span[text()='法官AI助手安装文档']")

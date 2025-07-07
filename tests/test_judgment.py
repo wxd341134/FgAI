@@ -85,6 +85,38 @@ class TestJudgment(BaseTest):
             )
             raise
 
+
+    @allure.feature("判决书模块")
+    @allure.story("判决书对比功能")
+    @allure.title("测试判决书版本对比")
+    def test_judgment_comparison(self, driver):
+        """
+        测试判决书对比功能，包括：
+        1. 选择新旧版本进行对比
+        2. 测试窗口切换功能
+        3. 验证对比结果
+        """
+        try:
+            # 执行判决书对比操作
+
+            # with allure.step("1. 点击进入判决书"):
+            #     logger.info("点击进入判决书")
+            #     self.judgment_utils.enter_judgment()
+            #     time.sleep(2)
+
+            with allure.step("执行判决书对比操作"):
+                logger.info("开始导出判决书")
+                self.judgment_utils.compare_judgments()
+
+        except Exception as e:
+            logger.error(f"判决书对比测试失败: {str(e)}")
+            allure.attach(
+                driver.get_screenshot_as_png(),
+                "测试失败截图",
+                allure.attachment_type.PNG
+            )
+            raise
+
     @allure.feature("笔录模块")
     @allure.story("视图操作测试")
     @allure.title("测试文档视图操作功能")
@@ -225,13 +257,9 @@ class TestJudgment(BaseTest):
                 self.judgment_utils.toggle_preview_sidebar()
                 time.sleep(1)
 
-                logger.info("关闭卷宗侧边栏")
-                self.judgment_utils.toggle_preview_sidebar()
-                time.sleep(1)
-
-            # with allure.step("3. 切换视图和缩放操作"):
-            #     logger.info("切换到书籍视图")
-            #     self.judgment_utils.switch_to_book_view()
+                # logger.info("关闭卷宗侧边栏")
+                # self.judgment_utils.toggle_preview_sidebar()
+                # time.sleep(1)
 
             with allure.step("4. OCR相关操作"):
                 logger.info("执行OCR操作")
@@ -246,70 +274,40 @@ class TestJudgment(BaseTest):
             )
             raise
 
-    @allure.feature("判决书模块")
-    @allure.story("判决书导入导出功能")
-    @allure.title("测试判决书的导入导出操作")
-    def test_judgment_import_export(self, driver):
-        """
-        测试判决书导入导出功能，包括：
-        1. 选择指定判决书
-        2. 导出判决书
-        3. 导入新的判决书
-        """
-        try:
 
 
-            with allure.step("1. 选择指定判决书"):
-                logger.info("开始选择判决书")
-                self.judgment_utils.select_judgment_by_date()
 
-            with allure.step("2. 导出判决书"):
-                logger.info("开始导出判决书")
-                self.judgment_utils.export_judgment()
-
-            with allure.step("3. 导入判决书"):
-                logger.info("开始导入判决书")
-                self.judgment_utils.import_judgment()
-
-        except Exception as e:
-            logger.error(f"判决书导入导出测试失败: {str(e)}")
-            allure.attach(
-                driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
-
-    @allure.feature("判决书模块")
-    @allure.story("判决书对比功能")
-    @allure.title("测试判决书版本对比")
-    def test_judgment_comparison(self, driver):
-        """
-        测试判决书对比功能，包括：
-        1. 选择新旧版本进行对比
-        2. 测试窗口切换功能
-        3. 验证对比结果
-        """
-        try:
-            # 执行判决书对比操作
-
-            with allure.step("1. 点击进入判决书"):
-                logger.info("点击进入判决书")
-                self.judgment_utils.enter_judgment()
-                time.sleep(2)
-
-            with allure.step("执行判决书对比操作"):
-                logger.info("开始导出判决书")
-                self.judgment_utils.compare_judgments()
-
-        except Exception as e:
-            logger.error(f"判决书对比测试失败: {str(e)}")
-            allure.attach(
-                driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
+    # @allure.feature("判决书模块")
+    # @allure.story("判决书导入导出功能")
+    # @allure.title("测试判决书的导入导出操作")
+    # def test_judgment_import_export(self, driver):
+    #     """
+    #     测试判决书导入导出功能，包括：
+    #     1. 选择指定判决书
+    #     2. 导出判决书
+    #     3. 导入新的判决书
+    #     """
+    #     try:
+    #         with allure.step("1. 选择指定判决书"):
+    #             logger.info("开始选择判决书")
+    #             self.judgment_utils.select_judgment_by_date()
+    #
+    #         with allure.step("2. 导出判决书"):
+    #             logger.info("开始导出判决书")
+    #             self.judgment_utils.export_judgment()
+    #
+    #         with allure.step("3. 导入判决书"):
+    #             logger.info("开始导入判决书")
+    #             self.judgment_utils.import_judgment()
+    #
+    #     except Exception as e:
+    #         logger.error(f"判决书导入导出测试失败: {str(e)}")
+    #         allure.attach(
+    #             driver.get_screenshot_as_png(),
+    #             "失败截图",
+    #             allure.attachment_type.PNG
+    #         )
+    #         raise
 
     @allure.feature("判决书模块")
     @allure.story("辅助阅卷功能")
@@ -324,10 +322,10 @@ class TestJudgment(BaseTest):
         """
         try:
 
-            with allure.step("1. 点击进入判决书"):
-                logger.info("点击进入判决书")
-                self.judgment_utils.enter_judgment()
-                time.sleep(2)
+            # with allure.step("1. 点击进入判决书"):
+            #     logger.info("点击进入判决书")
+            #     self.judgment_utils.enter_judgment()
+            #     time.sleep(2)
 
             # 执行辅助阅卷操作
             with allure.step("执行辅助阅卷操作"):
@@ -356,10 +354,10 @@ class TestJudgment(BaseTest):
         4. 翻页操作
         """
         try:
-            with allure.step("1. 点击进入判决书"):
-                logger.info("点击进入判决书")
-                self.judgment_utils.enter_judgment()
-                time.sleep(2)
+            # with allure.step("1. 点击进入判决书"):
+            #     logger.info("点击进入判决书")
+            #     self.judgment_utils.enter_judgment()
+            #     time.sleep(2)
 
             # 执行法条检索操作
             with allure.step("执行法条检索操作"):
@@ -387,10 +385,10 @@ class TestJudgment(BaseTest):
         """
         try:
 
-            with allure.step("1. 点击进入判决书"):
-                logger.info("点击进入判决书")
-                self.judgment_utils.enter_judgment()
-                time.sleep(2)
+            # with allure.step("1. 点击进入判决书"):
+            #     logger.info("点击进入判决书")
+            #     self.judgment_utils.enter_judgment()
+            #     time.sleep(2)
 
             # 执行卷宗检索操作
             with allure.step("执行卷宗检索操作"):
@@ -419,10 +417,10 @@ class TestJudgment(BaseTest):
         """
         try:
 
-            with allure.step("1. 点击进入判决书"):
-                logger.info("点击进入判决书")
-                self.judgment_utils.enter_judgment()
-                time.sleep(2)
+            # with allure.step("1. 点击进入判决书"):
+            #     logger.info("点击进入判决书")
+            #     self.judgment_utils.enter_judgment()
+            #     time.sleep(2)
 
             # 执行智能问答操作
             with allure.step("执行智能问答操作"):
@@ -431,6 +429,39 @@ class TestJudgment(BaseTest):
 
         except Exception as e:
             logger.error(f"智能问答测试失败: {str(e)}")
+            allure.attach(
+                driver.get_screenshot_as_png(),
+                "测试失败截图",
+                allure.attachment_type.PNG
+            )
+            raise
+
+    @allure.feature("判决书模块")
+    @allure.story("损害赔偿计算器功能")
+    @allure.title("测试损害赔偿计算器功能")
+    def test_damage_calculator(self, driver):
+        """
+        测试损害赔偿计算器功能，包括：
+        1. 医疗费用设置
+        2. 住宿费用设置
+        3. 新增删除操作
+        4. 取消选中操作
+        """
+        try:
+
+            # with allure.step("1. 点击进入判决书"):
+            #     logger.info("点击进入判决书")
+            #     self.judgment_utils.enter_judgment()
+            #     time.sleep(2)
+
+            # 执行计算器操作
+            with allure.step("执行计算器操作"):
+                result = self.judgment_utils.damage_calculator_operations()
+                assert result, "损害赔偿计算器操作失败"
+
+
+        except Exception as e:
+            logger.error(f"损害赔偿计算器测试失败: {str(e)}")
             allure.attach(
                 driver.get_screenshot_as_png(),
                 "测试失败截图",

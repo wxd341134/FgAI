@@ -6,7 +6,7 @@ class ArchivesSearchPage:
     # 辅助阅卷按钮
     ASSIST_READ_BUTTON = (
         By.XPATH,
-        "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[1]"
+        "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[1]"   #列表第1个案件
     )
 
     # 卷宗检索按钮

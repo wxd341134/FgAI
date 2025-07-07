@@ -9,7 +9,7 @@ from utils.logger import Logger
 
 logger = Logger().get_logger()
 
-@allure.epic("法官AI系统测试")
+@allure.epic("案件列表")
 @allure.feature("卷宗管理")
 class TestDossierUpload(BaseTest):
     """卷宗上传测试类"""

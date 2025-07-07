@@ -8,6 +8,7 @@ class UserCenterPage(BasePage):
     # 页面元素定位器
     LOCATORS = {
         "user_menu": (By.XPATH, "//span[@class='ant-dropdown-link user-dropdown-menu ant-dropdown-trigger']"),
+        "user_back": (By.CSS_SELECTOR, ".container_box .svg-icon"),
         "report_stats_option": (By.XPATH, "//li[contains(text(),'报表统计')]"),
         "department_option": (By.XPATH, "//div[@title='按承办部门']"),
         "handler_option": (By.XPATH, "//li[contains(text(),'按承办人')]"),
@@ -30,6 +31,10 @@ class UserCenterPage(BasePage):
     def click_user_menu(self):
         """点击用户菜单"""
         self.click_element(self.LOCATORS["user_menu"])
+
+    def click_back(self):
+        """点击返回"""
+        self.click_element(self.LOCATORS["user_back"])
 
     def open_report_statistics(self):
         """打开报表统计"""
@@ -54,6 +59,7 @@ class UserCenterPage(BasePage):
 
     def open_font_download(self):
         """打开字体下载"""
+        self.click_back()
         self.click_user_menu()
         self.click_element(self.LOCATORS["font_download_option"])
 

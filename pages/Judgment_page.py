@@ -59,7 +59,7 @@ class JudgmentPage:
 
     # 判决书操作相关元素
     JUDGMENT_SELECT = (By.XPATH, "//div[@class='note-title']/span[1]//div[@role='combobox']")  # 判决书选择下拉框
-    JUDGMENT_0422 = (By.XPATH, "//li[normalize-space()='2025-04-22 16:52:42']")  # 0422判决书选项
+    JUDGMENT_0627 = (By.XPATH, "//li[normalize-space()='2025-06-27 17:45:48']")  # 0422判决书选项
     EXPORT_BUTTON = (By.XPATH, "//div[@class='note-title']/span[3]/a[3]")  # 导出判决书按钮
     MORE_BUTTON = (By.XPATH, "//div[@class='note-title']/span[3]/a[4][text()='更多 ']")  # 更多按钮
     IMPORT_OPTION = (By.XPATH, "//li[@role='menuitem'][contains(text(),'导入')]")  # 导入选项
@@ -68,10 +68,10 @@ class JudgmentPage:
 
     # 判决书对比相关元素
     COMPARE_OPTION = (By.XPATH, "//li[contains(text(),'比对')]")  # 比对选项
-    OLD_VERSION_SELECT = (By.XPATH, "//span[text()='旧版本：']/following-sibling::div[1]/div[@role='combobox']")  # 旧版本选择框
-    OLD_VERSION_0422 = (By.XPATH, "//li[normalize-space()='2025-04-22 16:52:42']")  # 0422日期判决书
-    NEW_VERSION_SELECT = (By.XPATH, "//span[text()='新版本：']/following-sibling::div[1]/div[@role='combobox']")  # 新版本选择框
-    NEW_VERSION_0423 = (By.XPATH, "//div[@id='81fc46ab-718c-483c-8be5-39e491da17de']//li[normalize-space()='2025-04-23 12:03:20']")  # 0423日期判决书
+    OLD_VERSION_SELECT = (By.XPATH, "//span[text()='旧版本：']//following-sibling::div//*[name()='svg']")  # 旧版本选择框
+    OLD_VERSION_0422 = (By.XPATH, "//li[normalize-space()='2025-06-27 17:45:48']")  # 2025-06-27 17:45:48日期判决书
+    NEW_VERSION_SELECT = (By.XPATH, "//span[text()='新版本：']//following-sibling::div//*[name()='svg']")  # 新版本选择框
+    NEW_VERSION_0423 = (By.XPATH, "//span[text()='新版本：']/ancestor::body/div[6]//li[normalize-space()='2025-06-30 11:16:49导入']")  # 0423日期判决书
     SMALL_WINDOW = (By.XPATH, "//i[1]//img[1]")  # 小窗按钮
     LARGE_WINDOW = (By.XPATH, "//i[1]//img[1]")  # 大窗按钮
     CLOSE_COMPARE = (By.XPATH, "//button[@class='ant-btn ant-btn-primary']")  # 关闭比对按钮
@@ -86,16 +86,14 @@ class JudgmentPage:
     ARROW_LEFT = (By.XPATH, "//i[@aria-label='图标: arrow-left']//*[name()='svg']")  # 左箭头
     HIGHLIGHT_CHECKBOX = (By.XPATH, "//span[text()=' 高亮全部']")  # 高亮复选框
     CLOSE_SEARCH = (By.XPATH, "//i[@class='ant-dropdown-link anticon anticon-search ant-dropdown-trigger ant-dropdown-open']//*[name()='svg']")  # 关闭搜索按钮
-    # BACK_BUTTON = (By.XPATH, "//div[@class='header fluid']//div[3]//*[name()='svg']")  # 返回上一层按钮
+    BACK_BUTTON = (By.CSS_SELECTOR, ".container_box .svg-icon")  # 返回上一层按钮
 
     # 法条检索相关元素
     LAW_SEARCH = (By.XPATH, "//i[@class='side-icon-ftjs']")  # 法条检索按钮
     LAW_SEARCH_INPUT = (By.XPATH, "//input[@placeholder='请输入']")  # 法条搜索输入框
     SEARCH_BUTTON2 = (By.XPATH, "//button[@class='ant-btn ant-btn-primary ant-input-search-button']")  # 搜索按钮
-    LAW_PREVIEW = (By.XPATH,
-                   "//div[@class='kd-search-content ant-spin-nested-loading']/div/div[1]//span[text()='公安机关办理刑事案件程序规定（外交）']")  # 法条预览按钮
-    PREVIEW_SEARCH = (By.XPATH,
-                      "//div[@class='ant-modal-body']//div//div[@class='content-flex annotation']//div[@class='annotation-pdf']//div//i[@aria-label='图标: search']//*[name()='svg']")  # 预览中的搜索按钮
+    LAW_PREVIEW = (By.XPATH, "//div[@class='ant-spin-container']/div[1]//span[text()='中华人民共和国刑事诉讼法']")  # 法条预览按钮
+    PREVIEW_SEARCH = (By.CSS_SELECTOR, "div[class='ant-modal-body'] div i[aria-label='图标: search'] svg")  # 预览中的搜索按钮
     PREVIEW_SEARCH_INPUT = (By.XPATH, "//input[@placeholder='查找']")  # 预览中的搜索输入框
     CLOSE_PREVIEW = (By.XPATH, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']")  # 关闭预览按钮
     PAGE_4 = (By.XPATH, "//a[normalize-space()='4']")  # 第4页按钮
@@ -120,6 +118,27 @@ class JudgmentPage:
 
     # 智能问答结果验证相关元素
     QA_RESPONSE = (By.XPATH, "//div[contains(@class, 'qa-response')]")  # 问答响应内容区域
+
+    # 计算器相关元素
+    CALCULATOR = (By.XPATH, "//i[contains(@class, 'side-icon-jsq')]")  # 计算器按钮
+    DAMAGE_CALCULATOR = (By.CSS_SELECTOR, ".calculator-icon.icon-general")  # 损害赔偿计算器按钮
+
+    # 医疗费相关元素
+    MEDICAL_FEE_TITLE = (By.XPATH, "//span[contains(text(),'医疗费')]")  # 医疗费大标题
+    HOSPITAL_NAME_INPUT = (By.XPATH, "//input[@placeholder='请输入名称']")  # 医院名称输入框
+    MEDICAL_FEE_INPUT = (By.XPATH, "//input[@placeholder='请输入医疗费']")  # 医疗费输入框
+    HOSPITALIZATION_FEE_INPUT = (By.XPATH, "//input[@placeholder='请输入住院费']")  # 住院费输入框
+    ADD_BUTTON = (By.CSS_SELECTOR, "button[class='ant-btn ant-btn-primary ant-btn-sm']")  # 新增按钮
+    DELETE_BUTTON = (
+    By.CSS_SELECTOR, "button[class='ant-btn ant-btn-danger ant-btn-sm ant-btn-background-ghost']")  # 删除按钮
+
+    # 住宿费相关元素
+    ACCOMMODATION_TITLE = (By.XPATH, "//span[contains(text(),'住宿费')]")  # 住宿费大标题
+    ACCOMMODATION_FEE_INPUT = (By.XPATH, "//input[@placeholder='请输入住宿费']")  # 住宿费输入框
+    ACCOMMODATION_DAYS_INPUT = (By.XPATH, "//input[@placeholder='请输入住宿天数']")  # 住宿天数输入框
+
+    # 关闭按钮
+    CLOSE_CALCULATOR = (By.XPATH, "//i[2]//img[1]")  # 关闭计算器按钮
 
 
 

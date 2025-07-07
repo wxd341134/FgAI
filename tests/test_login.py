@@ -9,7 +9,7 @@ from common.login_utils import LoginUtils
 logger = Logger().get_logger()
 
 
-@allure.epic("系统登录测试")
+@allure.epic("1、系统登录测试")
 @allure.feature("登录与退出功能")
 class TestLogin:
     """登录和退出登录测试类"""

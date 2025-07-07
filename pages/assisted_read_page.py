@@ -13,13 +13,13 @@ class AssistedReadLocators:
     # 主要操作区域
     AUXILIARY_READING = (
         By.XPATH,
-        "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[1]"   #注意只能选择第一个案件
+        "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[2]/td[1]/div/i[1]"   #注意只能选择第2个案件
     )
 
     # 庭审笔录相关元素
     COURT_RECORD = (By.XPATH, "//span[@class='ant-tree-title']/span[text()='庭审笔录1']")
     SET_RECORD = (By.XPATH, "//span[@class='ant-tree-title']/span[text()='庭审笔录1']/following-sibling::i[2]")
-    CANCEL_SET_RECORD = (By.CSS_SELECTOR, "svg[data-v-19fbe780][data-v-3f752b24].plusType.svg-icon")
+    CANCEL_SET_RECORD = (By.CSS_SELECTOR, "svg[data-v-19fbe780][data-v-75e6b11e].plusType.svg-icon")
     CONFIRM_CANCEL_BUTTON = (By.CSS_SELECTOR, "button.ant-btn.ant-btn-primary.ant-btn-sm")
 
     # 处理意见相关元素
@@ -43,7 +43,7 @@ class AssistedReadLocators:
     By.XPATH, "//span[@class='ant-tree-title']/span[text()='庭审笔录3']/ancestor::li[1]/span[2]/span")
     EVIDENCE_ADD_BUTTON = (By.XPATH, "//span[contains(text(),'证据添加')]")
     DIRECTORY_DROPDOWN2 = (By.XPATH, "//span[@class='ant-select-selection__placeholder']")
-    APPELLANT_OPTION = (By.XPATH, "//span[@title='被告']")
+    APPELLANT_OPTION = (By.XPATH, "//span[@title='第三方']")
     CONFIRM_EVIDENCE_BUTTON = (By.XPATH, "//button[@class='ant-btn ant-btn-primary']")
 
     # 证据引用相关元素
@@ -91,6 +91,60 @@ class AssistedReadLocators:
     HANDLER_ALL_OPTION = (By.XPATH, "//li[contains(text(),'全部')]")
     SEARCH_BUTTON = (By.XPATH, "//body//div//button[1]")
     RESET_BUTTON = (By.XPATH, "//body//div//button[3]")
+
+    # 辅助阅卷按钮
+    # ASSIST_READ_BUTTON = (
+    #     By.XPATH,
+    #     "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[1]"
+    # )
+
+    # 卷宗检索按钮
+    ARCHIVES_SEARCH_BUTTON = (
+        By.XPATH,
+        "//i[contains(@class, 'side-icon-jzjs')]"
+    )
+
+    # 搜索输入框
+    SEARCH_INPUT = (
+        By.XPATH,
+        "//input[@placeholder='请输入']"
+    )
+
+    # 搜索按钮
+    SEARCH_BUTTON = (
+        By.XPATH,
+        "//button[@type='button']"
+    )
+
+    # 预览卷宗按钮（庭审笔录3）
+    PREVIEW_ARCHIVE = (
+        By.XPATH,
+        "//div[@class='recognitionBox']//span[text()='庭审笔录3']"
+    )
+
+    # 关闭预览按钮
+    CLOSE_PREVIEW_BUTTON = (
+        By.XPATH,
+        "//i[2]//img[1]"
+    )
+
+    # 仅显示文件名复选框
+    FILENAME_ONLY_CHECKBOX = (
+        By.XPATH,
+        "//span[contains(text(),'仅显示文件名')]"
+    )
+
+    # 关闭搜索按钮
+    CLOSE_SEARCH_BUTTON = (
+        By.XPATH,
+        "//i[@title='关闭']//*[name()='svg']"
+    )
+
+    # 搜索结果容器
+    SEARCH_RESULTS = (
+        By.XPATH,
+        "//div[contains(@class, 'recognitionBox')]"
+    )
 
 
 class AssistedReadPage:

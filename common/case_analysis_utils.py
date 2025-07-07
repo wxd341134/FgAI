@@ -117,7 +117,7 @@ class CaseAnalysisUtils:
                     # 输入不认同意见
                     self.input_text(
                         CaseAnalysisPage.OPINION_INPUT,
-                        "有意见，不认同转账凭据截图",
+                        "有意见，不认同此复印件",
                         "意见输入框"
                     )
                     time.sleep(1)
@@ -131,7 +131,7 @@ class CaseAnalysisUtils:
                     # 输入认同意见
                     self.input_text(
                         CaseAnalysisPage.OPINION_INPUT,
-                        "无意见，认同转账凭据截图",
+                        "无意见，认同此复印件",
                         "意见输入框"
                     )
                     time.sleep(1)

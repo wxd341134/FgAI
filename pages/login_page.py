@@ -184,7 +184,7 @@ class LoginPage:
     def open_login_page(self):
         """打开登录页面"""
         try:
-            self.driver.get("http://192.168.2.176:86/#/case/index")
+            self.driver.get("http://192.168.2.76:86/#/case/index")
             time.sleep(2)
             logger.info("成功打开登录页面")
         except Exception as e:

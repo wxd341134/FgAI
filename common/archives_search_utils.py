@@ -107,6 +107,8 @@ class ArchivesSearchUtils:
                     ArchivesSearchPage.CLOSE_SEARCH_BUTTON,
                     "关闭搜索按钮"
                 )
+                time.sleep(1)
+
 
             logger.info("卷宗检索流程执行完成")
 

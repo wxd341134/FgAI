@@ -10,7 +10,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("FGAI自动化测试")
+@allure.epic("案件列表")
 @allure.feature("案件查询")
 class TestCaseSearch(BaseTest):
     """案件查询测试类"""
@@ -60,7 +60,7 @@ class TestCaseSearch(BaseTest):
             logger.error(f"截图失败 {name}: {str(e)}")
 
     @allure.story("案件查询功能")
-    @allure.title("案件查询完整流程测试")
+    @allure.title("根据案件不同条件查询")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_case_search(self):
         """测试案件查询功能"""
@@ -72,8 +72,8 @@ class TestCaseSearch(BaseTest):
 
                 result = AssistedReadUtils.perform_case_search(
                     self.assisted_page,
-                    case_number="2025",
-                    case_name="(2025)苏0105民初0001号"
+                    case_number="2024",
+                    case_name="2024苏1003民初5832号"
                 )
 
                 if not result:

@@ -9,7 +9,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("法官AI助手")
+@allure.epic("辅助阅卷")
 @allure.feature("检索批注功能")
 class TestSearchAnnotations(BaseTest):
     """检索批注测试类"""
@@ -41,7 +41,7 @@ class TestSearchAnnotations(BaseTest):
             )
             raise
 
-    @allure.story("基础批注功能")
+    @allure.story("添加批注")
     @allure.title("测试添加批注")
     @allure.severity(allure.severity_level.NORMAL)
     def test_add_annotation(self):
@@ -65,7 +65,7 @@ class TestSearchAnnotations(BaseTest):
             )
             raise
 
-    @allure.story("编辑批注功能")
+    @allure.story("编辑批注")
     @allure.title("测试编辑现有批注")
     @allure.severity(allure.severity_level.NORMAL)
     def test_edit_annotation(self, driver):
@@ -81,7 +81,7 @@ class TestSearchAnnotations(BaseTest):
             logger.error(f"编辑批注测试失败: {str(e)}")
             raise
 
-    @allure.story("批注删除功能")
+    @allure.story("删除批注")
     @allure.title("测试删除批注")
     @allure.severity(allure.severity_level.NORMAL)
     def test_delete_annotation(self, driver):
@@ -94,8 +94,8 @@ class TestSearchAnnotations(BaseTest):
             logger.error(f"批注删除测试失败: {str(e)}")
             raise
 
-    @allure.story("法条管理完整流程")
-    @allure.title("测试法条完整生命周期")
+    @allure.story("批注引用法条")
+    @allure.title("测试批注引用法条")
     def test_law_lifecycle(self, driver):
         """
         测试法条的完整生命周期：

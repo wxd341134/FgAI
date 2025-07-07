@@ -7,7 +7,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("案件管理系统")
+@allure.epic("辅助阅卷")
 @allure.feature("法条检索模块")
 class TestStatuteSearch(BaseTest):
     """法条检索测试类"""
@@ -49,7 +49,7 @@ class TestStatuteSearch(BaseTest):
         except Exception as e:
             logger.error(f"截图失败: {str(e)}")
 
-    @allure.story("法条检索功能")
+    @allure.story("法条检索")
     @allure.title("测试法条检索基本流程")
     @allure.severity(allure.severity_level.NORMAL)
     def test_basic_statute_search(self, driver):

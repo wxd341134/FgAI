@@ -181,6 +181,9 @@ class ReadNotesUtils:
             self.safe_click(ReadNotesPage.REPLACE_BUTTON, "替换按钮")
             time.sleep(1)
 
+            self.safe_click(ReadNotesPage.FIND_BUTTON, "查找按钮")
+            time.sleep(1)
+
             # 执行全部替换
             self.safe_click(ReadNotesPage.REPLACE_ALL_BUTTON, "全部替换按钮")
             time.sleep(2)
@@ -247,7 +250,7 @@ class ReadNotesUtils:
             raise
 
     @allure.step("执行文本格式化操作")
-    def format_selected_text(self, text_to_select="原告欠款560000元"):
+    def format_selected_text(self, text_to_select="原告借款本金300000元"):
         """对选中文本执行一系列格式化操作"""
         try:
             logger.info(f"开始执行文本格式化操作: {text_to_select}")

@@ -18,7 +18,7 @@ class DossierUpPage(BasePage):
 
         # 上传按钮和文件列表
         self.upload_button = (
-        By.XPATH, "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[3]/div/div[1]")  # 这个只能定位到第一个案件
+        By.XPATH, "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[2]/td[3]/div/div[1]")  # 这个只能定位到第二个案件
         self.tree_button_group = (By.XPATH, "//div[@class='tree-button-group ant-btn-group']")
 
         # ZIP文件上传相关元素
