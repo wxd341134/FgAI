@@ -1,214 +1,150 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, WebDriverException
-from webdriver_manager.core.manager import DriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium import webdriver
+import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import ddddocr
 import time
+import os
+import glob
 from utils.logger import Logger
-import allure
-import time
-import tkinter as tk
-from tkinter import simpledialog
-
-# from common.driver_manager import DriverManager  # 导入driver管理类
 
 logger = Logger().get_logger()
 
 
 class LoginPage:
+    """登录页面类"""
+
+    # 页面元素
+    USERNAME_INPUT = (By.XPATH, "//input[@placeholder='请输入账号']")
+    PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='请输入密码']")
+    CAPTCHA_INPUT = (By.XPATH, "//input[@placeholder='请输入验证码']")
+    CAPTCHA_IMG = (By.XPATH, '//img[contains(@src, "/judge-ai/captcha")]')
+    LOGIN_BUTTON = (By.XPATH, "//button[@type='button']")
+
+    # 添加退出登录相关元素定位器
+    user_dropdown_menu = (By.XPATH, "//span[@class='ant-dropdown-link user-dropdown-menu ant-dropdown-trigger']")
+    logout_option = (By.XPATH, "//li[contains(text(),'退出')]")
+    login_page_indicator = (By.XPATH, "//input[@placeholder='请输入账号']")  # 用于验证是否退出到登录页面
+
+    # 配置参数
+    CAPTCHA_SAVE_DIR = r"E:\AutoTest\FgAIHelp\tests\captchas"
+    MAX_CAPTCHA_FILES = 4
+    LOGIN_URL = "http://192.168.2.76:86/#/case/index"
 
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
+        self.current_time = "2025-07-22 09:48:14"
+        self.current_user = "wxd341134"
 
-        # 页面元素定位器
-        self.username_input = (By.XPATH, "//input[@placeholder='请输入账号']")
-        self.password_input = (By.XPATH, "//input[@placeholder='请输入密码']")
-        self.verify_code_input = (By.XPATH, "//input[@placeholder='请输入验证码']")
-        self.login_button = (By.XPATH, "//button[@type='button']")
-        self.user_info = (By.XPATH, "//div[contains(@class, 'user-info')]")
-
-        # 添加退出登录相关元素定位器
-        self.user_dropdown_menu = (
-        By.XPATH, "//span[@class='ant-dropdown-link user-dropdown-menu ant-dropdown-trigger']")
-        self.logout_option = (By.XPATH, "//li[contains(text(),'退出')]")
-        self.login_page_indicator = (By.XPATH, "//input[@placeholder='请输入账号']")  # 用于验证是否退出到登录页面
-
-    def handle_error(self, error_msg, take_screenshot=True):
-        """统一的错误处理方法"""
-        logger.error(error_msg)
-        if take_screenshot:
-            try:
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    name="error_screenshot",
-                    attachment_type=allure.attachment_type.PNG
-                )
-            except:
-                logger.error("无法截图")
-        # 关闭浏览器
+    def ensure_captcha_dir(self):
+        """确保验证码保存目录存在并清理旧文件"""
         try:
-            DriverManager.quit_driver()
-        except Exception as e:
-            logger.error(f"关闭浏览器失败: {str(e)}")
-        raise Exception(error_msg)
+            # 创建目录
+            os.makedirs(self.CAPTCHA_SAVE_DIR, exist_ok=True)
 
-    def get_verify_code_from_user(self):
-        """弹出窗口获取验证码"""
-        try:
-            root = tk.Tk()
-            root.withdraw()  # 隐藏主窗口
-            root.attributes('-topmost', True)  # 窗口置顶
-
-            # 创建验证码输入弹窗
-            verify_code = simpledialog.askstring(
-                "验证码输入",
-                "请输入验证码：",
-                parent=root
+            # 获取并排序验证码文件
+            captcha_files = sorted(
+                glob.glob(os.path.join(self.CAPTCHA_SAVE_DIR, "captcha_*.png")),
+                key=os.path.getmtime,
+                reverse=True
             )
 
-            root.destroy()
-            return verify_code
-
-        except Exception as e:
-            self.handle_error(f"验证码输入窗口创建失败: {str(e)}")
-
-    def wait_for_verify_code(self, timeout=60):
-        """等待并处理验证码输入"""
-        try:
-            # 找到验证码输入框
-            verify_code_element = self.wait.until(
-                EC.presence_of_element_located(self.verify_code_input)
-            )
-
-            # 高亮验证码输入框
-            self.driver.execute_script("""
-                arguments[0].style.border = '2px solid red';
-                arguments[0].style.backgroundColor = '#fff3f3';
-            """, verify_code_element)
-
-            logger.info("=" * 50)
-            logger.info("请在弹出窗口中输入验证码")
-            logger.info("=" * 50)
-
-            # 获取验证码
-            verify_code = self.get_verify_code_from_user()
-
-            if verify_code:
-                # 清空输入框
-                verify_code_element.clear()
-                time.sleep(0.5)
-
-                # 输入验证码
-                verify_code_element.send_keys(verify_code)
-                logger.info("验证码已自动填入")
-
-                # 恢复输入框样式
-                self.driver.execute_script("""
-                    arguments[0].style.border = '';
-                    arguments[0].style.backgroundColor = '';
-                """, verify_code_element)
-
-                time.sleep(1)
-                return True
-            else:
-                self.handle_error("验证码输入为空")
-                return False
-
-        except Exception as e:
-            self.handle_error(f"验证码处理失败: {str(e)}")
-            return False
-
-    def login(self, username="wxdfg", password="wxd341134@"):
-        """执行登录操作"""
-        try:
-            # 打开登录页面
-            self.open_login_page()
-
-            # 输入用户名
-            logger.info(f"开始输入用户名: {username}")
-            try:
-                username_element = self.wait.until(
-                    EC.element_to_be_clickable(self.username_input)
-                )
-                username_element.clear()
-                username_element.send_keys(username)
-                logger.info("用户名输入完成")
-            except Exception as e:
-                self.handle_error(f"用户名输入失败: {str(e)}")
-
-            # 输入密码
-            logger.info("开始输入密码")
-            try:
-                password_element = self.wait.until(
-                    EC.element_to_be_clickable(self.password_input)
-                )
-                password_element.clear()
-                password_element.send_keys(password)
-                logger.info("密码输入完成")
-            except Exception as e:
-                self.handle_error(f"密码输入失败: {str(e)}")
-
-            # 处理验证码
-            if not self.wait_for_verify_code():
-                self.handle_error("验证码处理失败")
-
-            # 点击登录按钮
-            logger.info("尝试点击登录按钮")
-            try:
-                login_button = self.wait.until(
-                    EC.element_to_be_clickable(self.login_button)
-                )
-
+            # 删除超出数量的旧文件
+            for old_file in captcha_files[self.MAX_CAPTCHA_FILES:]:
                 try:
-                    login_button.click()
-                except:
-                    self.driver.execute_script("arguments[0].click();", login_button)
+                    os.remove(old_file)
+                    logger.info(f"{self.current_time} - {self.current_user} - 清理旧验证码文件: {old_file}")
+                except Exception as e:
+                    logger.error(f"{self.current_time} - {self.current_user} - 清理验证码文件失败: {str(e)}")
 
-                logger.info("登录按钮点击成功")
-            except Exception as e:
-                self.handle_error(f"登录按钮点击失败: {str(e)}")
-
-            # 登录成功后直接返回
-            logger.info("登录成功")
-            return True
-
+            return self.CAPTCHA_SAVE_DIR
         except Exception as e:
-            self.handle_error(f"登录过程失败: {str(e)}")
+            logger.error(f"{self.current_time} - {self.current_user} - 验证码目录操作失败: {str(e)}")
+            raise
+
+    def recognize_captcha(self, captcha_element):
+        """识别验证码"""
+        try:
+            # 确保目录存在
+            captcha_dir = self.ensure_captcha_dir()
+
+            # 保存验证码图片
+            timestamp = int(time.time())
+            captcha_path = os.path.join(captcha_dir, f"captcha_{timestamp}.png")
+            captcha_element.screenshot(captcha_path)
+            logger.info(f"{self.current_time} - {self.current_user} - 验证码已保存: {captcha_path}")
+
+            # 识别验证码
+            ocr = ddddocr.DdddOcr()
+            with open(captcha_path, 'rb') as f:
+                img_bytes = f.read()
+            result = ocr.classification(img_bytes)
+            logger.info(f"{self.current_time} - {self.current_user} - 验证码识别结果: {result}")
+            return result
+        except Exception as e:
+            logger.error(f"{self.current_time} - {self.current_user} - 验证码识别失败: {str(e)}")
+            raise
+
+    def login(self, username, password, max_retry=10):
+        """登录方法"""
+        try:
+            logger.info(f"{self.current_time} - {self.current_user} - 开始登录流程")
+
+            # 打开登录页面
+            self.driver.get(self.LOGIN_URL)
+            logger.info(f"{self.current_time} - {self.current_user} - 当前页面: {self.driver.title}")
+
+            # 输入用户名和密码
+            self.wait.until(EC.presence_of_element_located(self.USERNAME_INPUT)).send_keys(username)
+            self.driver.find_element(*self.PASSWORD_INPUT).send_keys(password)
+            time.sleep(1)
+
+            # 验证码识别和登录尝试
+            retry_count = 0
+            while retry_count < max_retry:
+                try:
+                    # 获取验证码图片
+                    captcha_element = self.wait.until(
+                        EC.presence_of_element_located(self.CAPTCHA_IMG)
+                    )
+
+                    # 识别验证码
+                    captcha_text = self.recognize_captcha(captcha_element)
+                    logger.info(
+                        f"{self.current_time} - {self.current_user} - 第 {retry_count + 1} 次尝试验证码: {captcha_text}")
+
+                    # 输入验证码
+                    captcha_input = self.driver.find_element(*self.CAPTCHA_INPUT)
+                    captcha_input.clear()
+                    captcha_input.send_keys(captcha_text)
+
+                    # 点击登录
+                    self.driver.find_element(*self.LOGIN_BUTTON).click()
+                    time.sleep(2)
+
+                    # 验证登录结果
+                    if "login" not in self.driver.current_url.lower():
+                        logger.info(f"{self.current_time} - {self.current_user} - 登录成功")
+                        return True
+
+                    retry_count += 1
+                    logger.warning(
+                        f"{self.current_time} - {self.current_user} - 验证码错误，准备第 {retry_count + 1} 次尝试")
+                    time.sleep(1)
+
+                except Exception as e:
+                    retry_count += 1
+                    logger.error(f"{self.current_time} - {self.current_user} - 登录尝试 {retry_count} 失败: {str(e)}")
+                    if retry_count >= max_retry:
+                        raise
+
+            logger.error(f"{self.current_time} - {self.current_user} - 登录失败，已达到最大重试次数: {max_retry}")
             return False
 
-    def open_login_page(self):
-        """打开登录页面"""
-        try:
-            self.driver.get("http://192.168.2.76:86/#/case/index")
-            time.sleep(2)
-            logger.info("成功打开登录页面")
         except Exception as e:
-            self.handle_error(f"打开登录页面失败: {str(e)}")
-
-    def is_logged_in(self):
-        """检查是否已登录"""
-        try:
-            return self.wait.until(
-                EC.presence_of_element_located(self.user_info)
-            ).is_displayed()
-        except:
-            return False
-
-    def open(self):
-        """打开登录页面"""
-        try:
-            # 假设登录页面的URL
-            self.driver.get("http://your-application-url/login")
-            logger.info("成功打开登录页面")
-            return True
-        except Exception as e:
-            logger.error(f"打开登录页面失败: {str(e)}")
-            return False
+            logger.error(f"{self.current_time} - {self.current_user} - 登录过程异常: {str(e)}")
+            raise
 
     def click_user_dropdown(self):
         """点击用户下拉菜单"""

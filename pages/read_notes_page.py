@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 
 class ReadNotesPage:
     # 阅卷笔记主要元素
-    REVIEW_NOTES_BUTTON = (By.XPATH, "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[2]")
+    REVIEW_NOTES_BUTTON = (By.XPATH, "//div[@class='ant-table-fixed-right']/div[2]//tbody/tr[1]/td[1]/div/i[2]")   #第一个案件
 
     # 判决书相关元素
     JUDGMENT_DOC = (By.XPATH, "//span[@class='ant-tree-title']/span[text()='判决书']")

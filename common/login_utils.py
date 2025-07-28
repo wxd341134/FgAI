@@ -1,4 +1,6 @@
 import time
+from telnetlib import EC
+
 import allure
 from utils.logger import Logger
 
@@ -15,7 +17,7 @@ class LoginUtils:
         try:
             logger.info("开始执行登录")
             login_page.login(username=username, password=password)
-            time.sleep(3)
+            time.sleep(1)
 
             # 截图记录登录成功状态
             allure.attach(
@@ -104,6 +106,7 @@ class LoginUtils:
                 attachment_type=allure.attachment_type.PNG
             )
             raise
+
 
     @staticmethod
     @allure.step("完整登录退出流程")

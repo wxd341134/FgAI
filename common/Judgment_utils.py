@@ -275,7 +275,7 @@ class JudgmentUtils:
                 # 2. 选择比对选项
                 logger.info("选择比对选项")
                 self.click_element(JudgmentPage.COMPARE_OPTION, "比对选项")
-                time.sleep(1)
+                time.sleep(3)
 
                 # 3. 选择旧版本
                 with allure.step("选择旧版本判决书"):

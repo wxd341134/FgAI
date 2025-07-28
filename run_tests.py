@@ -19,9 +19,9 @@ def run_tests():
         pytest.main([
               f'tests/test_login.py',
               f'tests/test_usercenter.py',
-              f'tests/test_case.py',
+              f'tests/test_CaseMg.py',
               f'tests/test_case_search.py',
-              f'tests/test_DossierUp.py',
+              f'tests/test_CaseFile.py',
               f'tests/test_assisted_read.py',
               f'tests/test_archives_search.py',
               f'tests/test_search_annotations.py',

@@ -130,6 +130,7 @@ class TestJudgment(BaseTest):
         4. 全屏操作
         """
         try:
+
             with allure.step("1. 切换视图模式"):
                 logger.info("切换到双页视图")
                 self.judgment_utils.switch_to_double_page_view()
@@ -171,6 +172,7 @@ class TestJudgment(BaseTest):
         3. 保存操作
         """
         try:
+
             with allure.step("1. 打开OCR功能"):
                 logger.info("打开OCR功能")
                 self.judgment_utils.open_ocr()

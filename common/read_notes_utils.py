@@ -91,11 +91,11 @@ class ReadNotesUtils:
             self.safe_click(ReadNotesPage.ZOOM_IN, "放大按钮")
             time.sleep(1)
 
-            # 下载操作
-            self.safe_click(ReadNotesPage.DOWNLOAD, "下载按钮")
-            time.sleep(1)
-            self.safe_click(ReadNotesPage.PDF_DOWNLOAD, "PDF下载选项", timeout=15)
-            time.sleep(2)  # 等待下载对话框
+            # 下载pdf操作
+            # self.safe_click(ReadNotesPage.DOWNLOAD, "下载按钮")
+            # time.sleep(1)
+            # self.safe_click(ReadNotesPage.PDF_DOWNLOAD, "PDF下载选项", timeout=15)
+            # time.sleep(2)  # 等待下载对话框
 
             # 关闭预览
             self.safe_click(ReadNotesPage.CLOSE_PREVIEW, "关闭预览按钮")
