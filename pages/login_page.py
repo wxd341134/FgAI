@@ -2,11 +2,17 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
+import sys
+from io import StringIO
+from contextlib import redirect_stdout
 import ddddocr
 import time
-import os
+
 import glob
 from utils.logger import Logger
+
+
 
 logger = Logger().get_logger()
 
@@ -66,6 +72,8 @@ class LoginPage:
     def recognize_captcha(self, captcha_element):
         """识别验证码"""
         try:
+
+
             # 确保目录存在
             captcha_dir = self.ensure_captcha_dir()
 
@@ -75,8 +83,12 @@ class LoginPage:
             captcha_element.screenshot(captcha_path)
             logger.info(f"{self.current_time} - {self.current_user} - 验证码已保存: {captcha_path}")
 
+            # 🔥 关键：使用 redirect_stdout 屏蔽 ddddocr 初始化时的 print
+            with redirect_stdout(StringIO()):
+                ocr = ddddocr.DdddOcr()
+
             # 识别验证码
-            ocr = ddddocr.DdddOcr()
+            # ocr = ddddocr.DdddOcr()
             with open(captcha_path, 'rb') as f:
                 img_bytes = f.read()
             result = ocr.classification(img_bytes)

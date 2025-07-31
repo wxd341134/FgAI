@@ -1,84 +1,47 @@
 from selenium.webdriver.common.by import By
-from pages.base_page import BasePage
 
 
-class UserCenterPage(BasePage):
-    """个人中心页面元素定位和基本操作"""
+class UserCenterPage:
+    """个人中心页面元素定位"""
 
-    # 页面元素定位器
-    LOCATORS = {
-        "user_menu": (By.XPATH, "//span[@class='ant-dropdown-link user-dropdown-menu ant-dropdown-trigger']"),
-        "user_back": (By.CSS_SELECTOR, ".container_box .svg-icon"),
-        "report_stats_option": (By.XPATH, "//li[contains(text(),'报表统计')]"),
-        "department_option": (By.XPATH, "//div[@title='按承办部门']"),
-        "handler_option": (By.XPATH, "//li[contains(text(),'按承办人')]"),
-        "query_button": (By.XPATH, "//body//div//button[1]"),
-        "export_button": (By.XPATH, "//body//div//button[3]"),
-        "font_download_option": (By.XPATH, "//li[contains(text(),'字体下载')]"),
-        "fangzheng_font_button": (By.XPATH, "//div[@class='ant-modal-body']//button[2]"),
-        "close_modal_button": (By.XPATH, "//span[@class='ant-modal-close-x']"),
-        "change_password_option": (By.XPATH, "//li[contains(text(),'修改密码')]"),
-        "old_password_input": (By.XPATH, "//input[@placeholder='请输入原密码']"),
-        "new_password_input": (By.XPATH, "//input[@placeholder='请输入新密码']"),
-        "confirm_password_input": (By.XPATH, "//input[@placeholder='请再次输入新密码']"),
-        "confirm_button": (By.XPATH, "//div[@class='ant-modal-footer']//button[2]")
+    # 用户菜单相关元素
+    USER_MENU = (By.XPATH, "//span[@class='ant-dropdown-link user-dropdown-menu ant-dropdown-trigger']")
+    USER_BACK = (By.CSS_SELECTOR, ".container_box .svg-icon")
 
-    }
+    # 报表统计相关元素
+    REPORT_STATS_OPTION = (By.XPATH, "//li[contains(text(),'报表统计')]")
+    DEPARTMENT_OPTION = (By.XPATH, "//div[@title='按承办部门']")
+    HANDLER_OPTION = (By.XPATH, "//li[contains(text(),'按承办人')]")
+    # 1. 点击开始时间输入框
+    START_DATE_INPUT = (By.XPATH, "//input[@placeholder='开始日期']")
+    # 2. 选择开始日期：2025年7月1日
+    START_DATE_DAY = (By.XPATH, "//td[@title='2025年7月1日']//div[@class='ant-calendar-date'][normalize-space()='1']")
+    # 3. 选择结束日期：2025年7月31日
+    END_DATE_DAY = (By.XPATH, "//td[@class='ant-calendar-cell ant-calendar-in-range-cell ant-calendar-last-day-of-month']")
+    # 4. 点击确定按钮
+    CONFIRM_BUTTON_DAY = (By.XPATH, "//a[contains(text(),'确 定')]")
 
-    def __init__(self, driver):
-        super().__init__(driver)
 
-    def click_user_menu(self):
-        """点击用户菜单"""
-        self.click_element(self.LOCATORS["user_menu"])
+    # 1. 点击承办人下拉框
+    HANDLER_DROPDOWN = (
+    By.XPATH, "//label[@title='承办人']/ancestor::div[2]/div[2]/div[@class='ant-form-item-control']")
 
-    def click_back(self):
-        """点击返回"""
-        self.click_element(self.LOCATORS["user_back"])
+    # 2. 选择下拉选项：wxdfg
+    HANDLER_OPTION_WXDFG = (By.XPATH, "//li[normalize-space()='wxdfg']")
 
-    def open_report_statistics(self):
-        """打开报表统计"""
-        self.click_user_menu()
-        self.click_element(self.LOCATORS["report_stats_option"])
 
-    def select_department_view(self):
-        """选择承办部门视图"""
-        self.click_element(self.LOCATORS["department_option"])
+    RESET_BUTTON = (By.XPATH, "//button[@class='ant-btn']")  # 点击重置按钮
+    QUERY_BUTTON = (By.XPATH, "//body//div//button[1]")  # 点击查询按钮
+    EXPORT_BUTTON = (By.XPATH, "//body//div//button[3]")   # 点击导出按钮
 
-    def select_handler_view(self):
-        """选择承办人视图"""
-        self.click_element(self.LOCATORS["handler_option"])
+    # 字体下载相关元素
+    FONT_DOWNLOAD_OPTION = (By.XPATH, "//li[contains(text(),'字体下载')]")
+    FANGZHENG_FONT_BUTTON = (By.XPATH, "//div[@class='ant-modal-body']//button[2]")
+    CLOSE_MODAL_BUTTON = (By.XPATH, "//span[@class='ant-modal-close-x']")
 
-    def click_query(self):
-        """点击查询按钮"""
-        self.click_element(self.LOCATORS["query_button"])
-
-    def click_export(self):
-        """点击导出按钮"""
-        self.click_element(self.LOCATORS["export_button"])
-
-    def open_font_download(self):
-        """打开字体下载"""
-        self.click_back()
-        self.click_user_menu()
-        self.click_element(self.LOCATORS["font_download_option"])
-
-    def download_fangzheng_font(self):
-        """下载方正字体"""
-        self.click_element(self.LOCATORS["fangzheng_font_button"])
-
-    def close_modal(self):
-        """关闭模态框"""
-        self.click_element(self.LOCATORS["close_modal_button"])
-
-    def open_change_password(self):
-        """打开修改密码"""
-        self.click_user_menu()
-        self.click_element(self.LOCATORS["change_password_option"])
-
-    def change_password(self, old_password, new_password, confirm_password):
-        """修改密码"""
-        self.input_text(self.LOCATORS["old_password_input"], old_password)
-        self.input_text(self.LOCATORS["new_password_input"], new_password)
-        self.input_text(self.LOCATORS["confirm_password_input"], confirm_password)
-        self.click_element(self.LOCATORS["confirm_button"])
+    # 修改密码相关元素
+    CHANGE_PASSWORD_OPTION = (By.XPATH, "//li[contains(text(),'修改密码')]")
+    OLD_PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='请输入原密码']")
+    NEW_PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='请输入新密码']")
+    CONFIRM_PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='请再次输入新密码']")
+    CONFIRM_BUTTON = (By.XPATH, "//div[@class='ant-modal-footer']//button[2]")

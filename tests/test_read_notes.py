@@ -11,27 +11,28 @@ logger = Logger().get_logger()
 
 @allure.epic("阅卷笔记")
 @allure.feature("阅卷笔记模块")
-class TestReadNotes(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # 使用 conftest.py 中的类级 fixture
+class TestReadNotes:
 
-    @classmethod
-    def setup_class(cls):
+    @pytest.fixture(autouse=True)
+    def setup_teardown(self):
         """
-        类级别的初始化：
-        1. 调用父类的setup_class完成登录
-        2. 初始化阅卷笔记工具类
-        3. 打开阅卷笔记页面
+        测试用例级别的设置和清理
+        使用 conftest.py 提供的 self.driver
         """
-        super().setup_class()  # 调用父类的setup_class完成登录
-        logger.info("初始化阅卷笔记模块...")
+        logger.info("开始测试前置操作...")
         try:
-            cls.read_notes = ReadNotesUtils(cls.driver)
-            # 登录后打开阅卷笔记页面
-            cls.read_notes.open_reading_notes()
-            logger.info("阅卷笔记页面已打开")
+            # 初始化工具类
+            self.read_notes = ReadNotesUtils(self.driver)
+            logger.info("阅卷笔记工具类初始化完成")
+
+            yield
+            logger.info("测试后置操作完成")
+
         except Exception as e:
             logger.error(f"阅卷笔记初始化失败: {str(e)}")
             allure.attach(
-                cls.driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "初始化失败截图",
                 allure.attachment_type.PNG
             )
@@ -63,6 +64,9 @@ class TestReadNotes(BaseTest):
         logger.info("开始测试判决书操作...")
         try:
             with allure.step("执行判决书相关操作"):
+                # 登录后打开阅卷笔记页面
+                self.read_notes.open_reading_notes()
+                logger.info("阅卷笔记页面已打开")
                 self.read_notes.operate_judgment_doc()
                 self.take_screenshot("判决书操作完成")
 

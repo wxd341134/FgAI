@@ -11,11 +11,12 @@ logger = Logger().get_logger()
 
 @allure.epic("辅助阅卷")
 @allure.feature("检索批注功能")
-class TestSearchAnnotations(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
+class TestSearchAnnotations():
     """检索批注测试类"""
 
     @pytest.fixture(autouse=True)
-    def setup_teardown(self, driver):
+    def setup_teardown(self):
         """
         测试用例级别的设置和清理
         Args:
@@ -24,7 +25,7 @@ class TestSearchAnnotations(BaseTest):
         logger.info("开始测试前置操作...")
         try:
             # 初始化检索批注工具类
-            self.annotations = SearchAnnotationsUtils(driver)
+            self.annotations = SearchAnnotationsUtils(self.driver)
             logger.info("检索批注工具类初始化完成")
 
             # 执行测试用例
@@ -35,7 +36,7 @@ class TestSearchAnnotations(BaseTest):
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置或清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -68,7 +69,7 @@ class TestSearchAnnotations(BaseTest):
     @allure.story("编辑批注")
     @allure.title("测试编辑现有批注")
     @allure.severity(allure.severity_level.NORMAL)
-    def test_edit_annotation(self, driver):
+    def test_edit_annotation(self):
         """测试编辑批注功能"""
         try:
             with allure.step("执行批注编辑流程"):
@@ -84,7 +85,7 @@ class TestSearchAnnotations(BaseTest):
     @allure.story("删除批注")
     @allure.title("测试删除批注")
     @allure.severity(allure.severity_level.NORMAL)
-    def test_delete_annotation(self, driver):
+    def test_delete_annotation(self):
         """测试删除批注的基本功能"""
         try:
             with allure.step("执行批注删除流程"):
@@ -96,7 +97,7 @@ class TestSearchAnnotations(BaseTest):
 
     @allure.story("批注引用法条")
     @allure.title("测试批注引用法条")
-    def test_law_lifecycle(self, driver):
+    def test_law_lifecycle(self):
         """
         测试法条的完整生命周期：
         1. 引用法条
@@ -141,7 +142,7 @@ class TestSearchAnnotations(BaseTest):
 
     @allure.story("页面跳转功能")
     @allure.title("测试页面跳转")
-    def test_page_navigation(self, driver):
+    def test_page_navigation(self):
         """测试页面跳转功能"""
         try:
             with allure.step("执行页面跳转操作"):

@@ -406,6 +406,8 @@ class JudgmentUtils:
         with allure.step("执行法条检索操作"):
             try:
 
+
+
                 # 1. 打开法条检索
                 with allure.step("打开法条检索"):
                     logger.info("点击法条检索按钮")
@@ -445,7 +447,7 @@ class JudgmentUtils:
                         EC.presence_of_element_located(JudgmentPage.PREVIEW_SEARCH_INPUT)
                     )
                     preview_search.clear()
-                    preview_search.send_keys("任务")
+                    preview_search.send_keys("公证")
                     preview_search.send_keys(Keys.ENTER)
                     time.sleep(1)
 

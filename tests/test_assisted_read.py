@@ -10,14 +10,15 @@ logger = Logger().get_logger()
 
 @allure.epic("辅助阅卷")
 @allure.feature("辅助阅卷模块")
-class TestAssistedReading(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture
+class TestAssistedReading():
     """辅助阅卷测试类"""
 
     CURRENT_TIME = "2025-07-25 08:00:26"
     CURRENT_USER = "wxd341134"
 
     @pytest.fixture(autouse=True)
-    def setup_teardown(self, driver):
+    def setup_teardown(self):
         """
         测试用例级别的设置和清理
         使用基类的driver fixture
@@ -25,7 +26,7 @@ class TestAssistedReading(BaseTest):
         logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 开始测试前置操作...")
         try:
             # 初始化辅助阅卷工具类
-            self.assisted_page = AssistedReadUtils(driver)
+            self.assisted_page = AssistedReadUtils(self.driver)
             logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 辅助阅卷工具类初始化完成")
 
             # 执行测试
@@ -36,7 +37,7 @@ class TestAssistedReading(BaseTest):
         except Exception as e:
             logger.error(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置/清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -69,7 +70,7 @@ class TestAssistedReading(BaseTest):
     9. 刷新并取消选中庭审笔录3
     10. 执行批量修改功能
     """)
-    def test_assisted_reading(self, driver):
+    def test_assisted_reading(self):
         """测试辅助阅卷流程"""
         try:
             # 1. 点击辅助阅卷

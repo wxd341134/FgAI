@@ -9,11 +9,12 @@ logger = Logger().get_logger()
 
 @allure.epic("辅助阅卷")
 @allure.feature("案件查询模块")
-class TestCaseSearch(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
+class TestCaseSearch():
     """案件查询测试类"""
 
     @pytest.fixture(autouse=True)
-    def setup_teardown(self, driver):
+    def setup_teardown(self):
         """
         测试用例级别的设置和清理
         使用基类的driver fixture
@@ -21,7 +22,7 @@ class TestCaseSearch(BaseTest):
         logger.info("开始测试前置操作...")
         try:
             # 初始化案件查询工具类
-            self.case_search = CaseSearchUtils(driver)
+            self.case_search = CaseSearchUtils(self.driver)
             logger.info("案件查询工具类初始化完成")
 
             # 执行测试
@@ -32,7 +33,7 @@ class TestCaseSearch(BaseTest):
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置/清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -41,7 +42,7 @@ class TestCaseSearch(BaseTest):
     @allure.story("案件查询功能")
     @allure.title("测试案件查询条件组合")
     @allure.severity(allure.severity_level.CRITICAL)
-    def test_case_search(self, driver):
+    def test_case_search(self):
         """测试案件查询功能"""
         try:
             logger.info("开始执行案件查询测试...")
@@ -81,7 +82,7 @@ class TestCaseSearch(BaseTest):
         except AssertionError as ae:
             logger.error(f"2025-07-24 06:02:01 - wxd341134 - 断言失败: {str(ae)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "assertion_failed",
                 allure.attachment_type.PNG
             )
@@ -89,7 +90,7 @@ class TestCaseSearch(BaseTest):
         except Exception as e:
             logger.error(f"2025-07-24 06:02:01 - wxd341134 - 测试执行失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "test_failed",
                 allure.attachment_type.PNG
             )

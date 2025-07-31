@@ -9,11 +9,12 @@ logger = Logger().get_logger()
 
 @allure.epic("辅助阅卷")
 @allure.feature("法条检索模块")
-class TestStatuteSearch(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
+class TestStatuteSearch():
     """法条检索测试类"""
 
     @pytest.fixture(autouse=True)
-    def setup_teardown(self, driver):
+    def setup_teardown(self):
         """
         测试用例级别的设置和清理
         使用基类的driver fixture
@@ -21,7 +22,7 @@ class TestStatuteSearch(BaseTest):
         logger.info("开始测试前置操作...")
         try:
             # 初始化法条检索工具类
-            self.statute_search = StatuteSearchUtils(driver)
+            self.statute_search = StatuteSearchUtils(self.driver)
             logger.info("法条检索工具类初始化完成")
 
             # 执行测试
@@ -32,7 +33,7 @@ class TestStatuteSearch(BaseTest):
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置/清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -52,7 +53,7 @@ class TestStatuteSearch(BaseTest):
     @allure.story("法条检索")
     @allure.title("测试法条检索基本流程")
     @allure.severity(allure.severity_level.NORMAL)
-    def test_basic_statute_search(self, driver):
+    def test_basic_statute_search(self):
         """
         测试法条检索基本流程：
         1. 点击辅助阅卷

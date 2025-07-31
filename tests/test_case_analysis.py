@@ -8,15 +8,16 @@ logger = Logger().get_logger()
 
 @allure.epic("案件分析")
 @allure.feature("案件分析功能")
-class TestCaseAnalysis(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture
+class TestCaseAnalysis():
     """案件分析测试类"""
 
     @pytest.fixture(autouse=True)
-    def setup_case_analysis(self, driver):
+    def setup_case_analysis(self):
         """测试前后处理"""
         logger.info("开始测试前置操作...")
         try:
-            self.case_analysis = CaseAnalysisUtils(driver)
+            self.case_analysis = CaseAnalysisUtils(self.driver)
             # # 进入案件分析页面
             # self.case_analysis.enter_case_analysis()
             yield
@@ -24,7 +25,7 @@ class TestCaseAnalysis(BaseTest):
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置或清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -32,7 +33,7 @@ class TestCaseAnalysis(BaseTest):
 
     @allure.story("证据状态切换")
     @allure.title("测试证据认同状态切换")
-    def test_toggle_evidence_status(self, driver):
+    def test_toggle_evidence_status(self):
         # 进入案件分析页面
         self.case_analysis.enter_case_analysis()
         """测试证据认同状态的切换功能"""
@@ -48,7 +49,7 @@ class TestCaseAnalysis(BaseTest):
 
     @allure.story("展开收起功能")
     @allure.title("测试展开收起操作")
-    def test_expand_collapse(self, driver):
+    def test_expand_collapse(self):
         """测试展开收起功能"""
         try:
             with allure.step("执行展开收起操作"):
@@ -59,7 +60,7 @@ class TestCaseAnalysis(BaseTest):
 
     @allure.story("事实描述功能")
     @allure.title("测试完善事实描述")
-    def test_complete_fact_description(self, driver):
+    def test_complete_fact_description(self):
         """测试完善事实描述功能"""
         try:
             with allure.step("执行完善事实描述"):

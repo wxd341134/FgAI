@@ -1,7 +1,6 @@
 import allure
 import pytest
 from common.archives_search_utils import ArchivesSearchUtils
-from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()
@@ -9,22 +8,22 @@ logger = Logger().get_logger()
 
 @allure.epic("辅助阅卷")
 @allure.feature("卷宗检索模块")
-class TestArchivesSearch(BaseTest):
-    """卷宗检索测试类"""
+@pytest.mark.usefixtures("setup_class")  # 使用 conftest.py 中的类级 fixture
+class TestArchivesSearch:
+    """卷宗检索测试类，适配 conftest.py 的 fixture 管理方式"""
 
     @pytest.fixture(autouse=True)
-    def setup_teardown(self, driver):
+    def setup_teardown(self):
         """
         测试用例级别的设置和清理
-        使用基类的driver fixture
+        使用 conftest.py 提供的 self.driver
         """
         logger.info("开始测试前置操作...")
         try:
-            # 初始化卷宗检索工具类
-            self.archives_search = ArchivesSearchUtils(driver)
+            # 初始化工具类
+            self.archives_search = ArchivesSearchUtils(self.driver)
             logger.info("卷宗检索工具类初始化完成")
 
-            # 执行测试
             yield
 
             logger.info("测试后置操作完成")
@@ -32,7 +31,7 @@ class TestArchivesSearch(BaseTest):
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置/清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -43,8 +42,8 @@ class TestArchivesSearch(BaseTest):
         try:
             allure.attach(
                 self.driver.get_screenshot_as_png(),
-                name,
-                allure.attachment_type.PNG
+                name=name,
+                attachment_type=allure.attachment_type.PNG
             )
         except Exception as e:
             logger.error(f"截图失败: {str(e)}")
@@ -52,7 +51,7 @@ class TestArchivesSearch(BaseTest):
     @allure.story("卷宗检索功能")
     @allure.title("测试卷宗检索基本流程")
     @allure.severity(allure.severity_level.NORMAL)
-    def test_basic_archives_search(self, driver):
+    def test_basic_archives_search(self):
         """
         测试卷宗检索基本流程：
         1. 点击卷宗检索

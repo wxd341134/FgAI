@@ -1,9 +1,8 @@
 import time
-
 import pytest
 import allure
+
 from common.caseMg_utils import CaseMgUtils
-from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()
@@ -11,25 +10,26 @@ logger = Logger().get_logger()
 
 @allure.epic("案件管理系统")
 @allure.feature("案件管理模块")
-class TestCaseManagement(BaseTest):
-    """案件管理测试类"""
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
+class TestCaseManagement:
+    """案件管理测试类，适配 fixture 驱动的初始化方式"""
+    # driver: WebDriver  # 告诉 PyCharm，self.driver 是 WebDriver 类型
 
     @pytest.fixture(autouse=True)
-    def setup_case(self, driver):
+    def setup_case(self):
         """
-        测试前后处理
-        前置：初始化CaseMgUtils对象
-        后置：记录日志
+        测试用例级别的 setup/teardown
+        自动使用 self.driver（由 setup_class 注入）
         """
         logger.info("2025-07-18 09:52:51 - wxd341134 - 开始测试前置操作")
         try:
-            self.case_utils = CaseMgUtils(driver)
+            self.case_utils = CaseMgUtils(self.driver)  # ✅ 使用 self.driver 创建一个 CaseMgUtils 实例，并将当前的浏览器驱动传入，让它可以操作页面
             yield
             logger.info(" 测试后置操作完成")
         except Exception as e:
             logger.error(f" 测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "setup_failed",
                 allure.attachment_type.PNG
             )
@@ -38,22 +38,19 @@ class TestCaseManagement(BaseTest):
     @allure.story("案件基本操作")
     @allure.title("案件增删改功能测试")
     @allure.severity(allure.severity_level.CRITICAL)
-    def test_case_crud(self, driver):
+    def test_case_crud(self):
         """测试案件的添加、编辑和删除功能"""
         try:
             case_name = "(2025)苏0105民初0001号"
 
-            # 添加案件
             with allure.step(f"添加案件: {case_name}"):
                 assert self.case_utils.add_case(case_name, case_name)
                 time.sleep(3)
 
-            # 编辑案件
             with allure.step(f"编辑案件: {case_name}"):
                 assert self.case_utils.edit_case(case_name)
                 time.sleep(3)
 
-            # 删除案件
             with allure.step(f"删除案件: {case_name}"):
                 assert self.case_utils.delete_case(case_name)
                 time.sleep(1)
@@ -63,7 +60,7 @@ class TestCaseManagement(BaseTest):
         except AssertionError as ae:
             logger.error(f" 断言失败: {str(ae)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "assertion_failed",
                 allure.attachment_type.PNG
             )
@@ -71,7 +68,7 @@ class TestCaseManagement(BaseTest):
         except Exception as e:
             logger.error(f"测试执行失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "test_failed",
                 allure.attachment_type.PNG
             )

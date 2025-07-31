@@ -11,11 +11,12 @@ logger = Logger().get_logger()
 
 @allure.epic("案件管理")
 @allure.feature("卷宗管理")
-class TestCaseFile(BaseTest):
+@pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
+class TestCaseFile:
     """卷宗管理测试类"""
 
     @pytest.fixture(autouse=True)
-    def setup_case_file(self, driver):
+    def setup_case_file(self):
         """
         测试前后处理
         前置：初始化CaseFileUtils对象
@@ -24,7 +25,7 @@ class TestCaseFile(BaseTest):
         logger.info("开始测试前置操作...")
         try:
             # 初始化工具类
-            self.case_file_utils = CaseFileUtils(driver)
+            self.case_file_utils = CaseFileUtils(self.driver)
             # 设置测试数据目录
             self.test_data_dir = os.path.join(get_project_root(), "test_data")
             yield
@@ -32,7 +33,7 @@ class TestCaseFile(BaseTest):
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "设置或清理失败截图",
                 allure.attachment_type.PNG
             )
@@ -40,7 +41,7 @@ class TestCaseFile(BaseTest):
 
     @allure.story("卷宗上传")
     @allure.title("卷宗上传基本流程")
-    def test_case_file_upload(self, driver):
+    def test_case_file_upload(self):
         """
         测试卷宗上传基本流程
         步骤：
@@ -59,7 +60,7 @@ class TestCaseFile(BaseTest):
         except Exception as e:
             logger.error(f"卷宗上传测试失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "测试失败截图",
                 allure.attachment_type.PNG
             )
@@ -72,7 +73,7 @@ class TestCaseFile(BaseTest):
 
     @allure.story("目录操作")
     @allure.title("目录操作基本流程")
-    def test_directory_operations(self, driver):
+    def test_directory_operations(self):
         """
         测试目录操作基本流程
         步骤：
@@ -90,7 +91,7 @@ class TestCaseFile(BaseTest):
         except Exception as e:
             logger.error(f"目录操作测试失败: {str(e)}")
             allure.attach(
-                driver.get_screenshot_as_png(),
+                self.driver.get_screenshot_as_png(),
                 "测试失败截图",
                 allure.attachment_type.PNG
             )

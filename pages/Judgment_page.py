@@ -92,7 +92,7 @@ class JudgmentPage:
     LAW_SEARCH = (By.XPATH, "//i[@class='side-icon-ftjs']")  # 法条检索按钮
     LAW_SEARCH_INPUT = (By.XPATH, "//input[@placeholder='请输入']")  # 法条搜索输入框
     SEARCH_BUTTON2 = (By.XPATH, "//button[@class='ant-btn ant-btn-primary ant-input-search-button']")  # 搜索按钮
-    LAW_PREVIEW = (By.XPATH, "//div[@class='ant-spin-container']/div[1]//span[text()='中华人民共和国刑事诉讼法']")  # 法条预览按钮
+    LAW_PREVIEW = (By.XPATH, "//div[@class='ant-spin-container']/div[1]//span[text()='房屋拆迁证据保全公证细则（司法部）']")  # 法条预览按钮
     PREVIEW_SEARCH = (By.CSS_SELECTOR, "div[class='ant-modal-body'] div i[aria-label='图标: search'] svg")  # 预览中的搜索按钮
     PREVIEW_SEARCH_INPUT = (By.XPATH, "//input[@placeholder='查找']")  # 预览中的搜索输入框
     CLOSE_PREVIEW = (By.XPATH, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']")  # 关闭预览按钮
