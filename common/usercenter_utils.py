@@ -4,13 +4,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from pages.usercenter_page import UserCenterPage
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 
 
 logger = Logger().get_logger()
 
 
-class UserCenterUtils:
+class UserCenterUtils(CommonUtils):
     """个人中心相关操作工具类"""
 
     def __init__(self, driver):
@@ -19,43 +20,6 @@ class UserCenterUtils:
         self.wait = WebDriverWait(driver, 10)
         self.current_time = "2025-07-28 07:58:22"
         self.current_user = "wxd341134"
-
-    def input_text(self, locator, text, element_name):
-        """输入文本的通用方法"""
-        try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            element.clear()
-            element.send_keys(text)
-            logger.info(f"在 {element_name} 中输入文本 '{text}' 成功")
-        except Exception as e:
-            logger.error(f"在 {element_name} 中输入文本失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{element_name}输入失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
-
-    def click_element(self, locator, element_name):
-        """
-        点击元素的通用方法
-        Args:
-            locator: 元素定位器
-            element_name: 元素名称(用于日志)
-        """
-        try:
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            element.click()
-            logger.info(f"{self.current_time} - {self.current_user} - 点击 {element_name} 成功")
-            time.sleep(0.5)  # 短暂等待UI响应
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 点击 {element_name} 失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{element_name}点击失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
 
     @allure.step("执行报表统计操作")
     def handle_report_statistics(self):

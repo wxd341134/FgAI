@@ -5,13 +5,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 from pages.caseMg_page import CaseMgPage
 
 logger = Logger().get_logger()
 
 
-class CaseMgUtils:
+class CaseMgUtils(CommonUtils):
     """案件管理工具类"""
 
     def __init__(self, driver):
@@ -20,32 +22,6 @@ class CaseMgUtils:
         self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
-    def _click_element(self, locator, element_name):
-        """通用点击元素方法"""
-        try:
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
-            time.sleep(1)
-            element.click()
-            logger.info(f"{self.current_time} - {self.current_user} - 点击 {element_name} 成功")
-            return True
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 点击 {element_name} 失败: {str(e)}")
-            self._take_screenshot(f"{element_name}_click_failed")
-            return False
-
-    def _input_text(self, locator, text, element_name):
-        """通用文本输入方法"""
-        try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            element.clear()
-            element.send_keys(text)
-            logger.info(f"{self.current_time} - {self.current_user} - 输入文本 '{text}' 到 {element_name} 成功")
-            return True
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 输入文本失败: {str(e)}")
-            self._take_screenshot(f"{element_name}_input_failed")
-            return False
 
     def _take_screenshot(self, name):
         """统一的截图方法"""
@@ -61,43 +37,32 @@ class CaseMgUtils:
         try:
             # 点击添加按钮
             with allure.step("点击添加按钮"):
-                if not self._click_element(CaseMgPage.ADD_BUTTON, "添加按钮"):
-                    return False
+                self.click_element(CaseMgPage.ADD_BUTTON, "添加按钮")
 
             # 填写基本信息
             with allure.step("填写案件信息"):
-                if not self._input_text(CaseMgPage.CASE_NAME_INPUT, case_name, "案件名称"):
-                    return False
-                if not self._input_text(CaseMgPage.CASE_NUMBER_INPUT, case_number, "案件编号"):
-                    return False
+                self.input_text(CaseMgPage.CASE_NAME_INPUT, case_name, "案件名称")
+                self.input_text(CaseMgPage.CASE_NUMBER_INPUT, case_number, "案件编号")
 
             # 选择案件类型
             with allure.step("选择案件类型"):
-                if not self._click_element(CaseMgPage.CASE_TYPE_DROPDOWN, "案件类型下拉框"):
-                    return False
-                if not self._click_element(CaseMgPage.CASE_TYPE_CIVIL, "民事类型"):
-                    return False
-                if not self._click_element(CaseMgPage.CASE_TYPE_CIVIL_FIRST, "民事一审"):
-                    return False
+                self.click_element(CaseMgPage.CASE_TYPE_DROPDOWN, "案件类型下拉框")
+                self.click_element(CaseMgPage.CASE_TYPE_CIVIL, "民事类型")
+                self.click_element(CaseMgPage.CASE_TYPE_CIVIL_FIRST, "民事一审")
 
             # 选择案由类型
             with allure.step("选择案由类型"):
-                if not self._click_element(CaseMgPage.CASE_REASON_DROPDOWN, "案由类型下拉框"):
-                    return False
-                if not self._click_element(CaseMgPage.CASE_REASON_ADMIN, "行政案由"):
-                    return False
+                self.click_element(CaseMgPage.CASE_REASON_DROPDOWN, "案由类型下拉框")
+                self.click_element(CaseMgPage.CASE_REASON_ADMIN, "行政案由")
 
             # 选择立案日期
             with allure.step("选择立案日期"):
-                if not self._click_element(CaseMgPage.FILING_DATE_INPUT, "立案日期"):
-                    return False
-                if not self._click_element(CaseMgPage.TODAY_OPTION, "今天"):
-                    return False
+                self.click_element(CaseMgPage.FILING_DATE_INPUT, "立案日期")
+                self.click_element(CaseMgPage.TODAY_OPTION, "今天")
 
             # 提交
             with allure.step("提交案件信息"):
-                if not self._click_element(CaseMgPage.CONFIRM_BUTTON, "确定按钮"):
-                    return False
+                self.click_element(CaseMgPage.CONFIRM_BUTTON, "确定按钮")
 
             logger.info(f"{self.current_time} - {self.current_user} - 添加案件成功")
             return True
@@ -114,8 +79,7 @@ class CaseMgUtils:
             # 点击编辑按钮
             with allure.step("点击编辑按钮"):
                 edit_locator = (By.XPATH, CaseMgPage.EDIT_BUTTON_TEMPLATE.format(case_name))
-                if not self._click_element(edit_locator, "编辑按钮"):
-                    return False
+                self.click_element(edit_locator, "编辑按钮")
 
             # 修改案件名称
             with allure.step("修改案件名称"):
@@ -147,15 +111,12 @@ class CaseMgUtils:
 
             # 选择法官助理
             with allure.step("选择法官助理"):
-                if not self._click_element(CaseMgPage.ASSISTANT_DROPDOWN, "法官助理下拉框"):
-                    return False
-                if not self._click_element(CaseMgPage.ASSISTANT_OPTION, "选择助理"):
-                    return False
+                self.click_element(CaseMgPage.ASSISTANT_DROPDOWN, "法官助理下拉框")
+                self.click_element(CaseMgPage.ASSISTANT_OPTION, "选择助理")
 
             # 提交修改
             with allure.step("提交修改"):
-                if not self._click_element(CaseMgPage.CONFIRM_BUTTON, "确定按钮"):
-                    return False
+                self.click_element(CaseMgPage.CONFIRM_BUTTON, "确定按钮")
 
             logger.info(f"{self.current_time} - {self.current_user} - 编辑案件成功")
             return True
@@ -172,13 +133,11 @@ class CaseMgUtils:
             # 点击删除按钮
             with allure.step("点击删除按钮"):
                 delete_locator = (By.XPATH, CaseMgPage.DELETE_BUTTON_TEMPLATE.format(case_name))
-                if not self._click_element(delete_locator, "删除按钮"):
-                    return False
+                self.click_element(delete_locator, "删除按钮")
 
             # 确认删除
             with allure.step("确认删除"):
-                if not self._click_element(CaseMgPage.DELETE_CONFIRM, "确认删除"):
-                    return False
+                self.click_element(CaseMgPage.DELETE_CONFIRM, "确认删除")
 
             logger.info(f"{self.current_time} - {self.current_user} - 删除案件成功")
             return True

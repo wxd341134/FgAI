@@ -27,7 +27,7 @@ class TestCaseFile:
             # 初始化工具类
             self.case_file_utils = CaseFileUtils(self.driver)
             # 设置测试数据目录
-            self.test_data_dir = os.path.join(get_project_root(), "test_data")
+            # self.test_data_dir = os.path.join(self.get_project_root(), "test_data")
             yield
             logger.info("测试后置操作完成")
         except Exception as e:

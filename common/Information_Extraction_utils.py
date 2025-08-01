@@ -4,12 +4,14 @@ import allure
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 from pages.Information_Extraction_page import InformationExtractionPage
 
 logger = Logger().get_logger()
 
-class InformationExtractionUtils:
+class InformationExtractionUtils(CommonUtils):
     """要素提取功能操作工具类"""
 
     def __init__(self, driver):
@@ -17,40 +19,6 @@ class InformationExtractionUtils:
         self.wait = WebDriverWait(driver, 10)
         self.current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
-
-    def click_element(self, locator, element_name):
-        """点击元素的通用方法"""
-        try:
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            element.click()
-            logger.info(f"{self.current_time} - {self.current_user} - 点击 {element_name} 成功")
-            time.sleep(0.5)
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 点击 {element_name} 失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{element_name}点击失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
-
-    def input_text(self, locator, text, element_name, clear_first=True):
-        """输入文本的通用方法"""
-        try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            if clear_first:
-                element.clear()
-            element.send_keys(text)
-            action = "覆盖输入" if clear_first else "追加输入"
-            logger.info(f"{self.current_time} - {self.current_user} - 在 {element_name} 中{action}文本 '{text}' 成功")
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 在 {element_name} 中输入文本失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{element_name}输入失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
 
     @allure.step("执行要素提取基本操作")
     def handle_basic_operations(self):

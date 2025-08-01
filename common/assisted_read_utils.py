@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 from pages.assisted_read_page import AssistedReadPage
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 import time
 import allure
@@ -18,30 +19,30 @@ from datetime import datetime
 logger = Logger().get_logger()
 
 
-class AssistedReadUtils:
+class AssistedReadUtils(CommonUtils):
     """辅助阅卷工具类"""
 
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
-        self.current_time = "2025-07-25 07:51:46"
+        self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
-    def _click_element(self, locator, element_name):
-        """通用点击方法"""
-        try:
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
-            time.sleep(1)
-            element.click()
-            logger.info(f"{self.current_time} - {self.current_user} - 点击 {element_name} 成功")
-            return True
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 点击 {element_name} 失败: {str(e)}")
-            self._take_screenshot(f"{element_name}_click_failed")
-            return False
+    # def click_element(self, locator, element_name):
+    #     """通用点击方法"""
+    #     try:
+    #         element = self.wait.until(EC.element_to_be_clickable(locator))
+    #         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+    #         time.sleep(1)
+    #         element.click()
+    #         logger.info(f"{self.current_time} - {self.current_user} - 点击 {element_name} 成功")
+    #         return True
+    #     except Exception as e:
+    #         logger.error(f"{self.current_time} - {self.current_user} - 点击 {element_name} 失败: {str(e)}")
+    #         self.take_screenshot(f"{element_name}_click_failed")
+    #         return False
 
-    # def _click_element_js(self, locator, element_name):
+    # def click_element_js(self, locator, element_name):
     #     """使用JavaScript点击方法"""
     #     try:
     #         element = self.wait.until(EC.presence_of_element_located(locator))
@@ -52,67 +53,66 @@ class AssistedReadUtils:
     #         return True
     #     except Exception as e:
     #         logger.error(f"{self.current_time} - {self.current_user} - JavaScript点击 {element_name} 失败: {str(e)}")
-    #         self._take_screenshot(f"{element_name}_js_click_failed")
+    #         self.take_screenshot(f"{element_name}_js_click_failed")
     #         return False
 
-    def _input_text(self, locator, text, element_name):
-        """通用输入方法"""
-        try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            element.clear()
-            time.sleep(1)
-            element.send_keys(text)
-            logger.info(f"{self.current_time} - {self.current_user} - 在 {element_name} 输入: {text}")
-            return True
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 在 {element_name} 输入失败: {str(e)}")
-            self._take_screenshot(f"{element_name}_input_failed")
-            return False
+    # def input_text(self, locator, text, element_name):
+    #     """通用输入方法"""
+    #     try:
+    #         element = self.wait.until(EC.presence_of_element_located(locator))
+    #         element.clear()
+    #         time.sleep(1)
+    #         element.send_keys(text)
+    #         logger.info(f"{self.current_time} - {self.current_user} - 在 {element_name} 输入: {text}")
+    #         return True
+    #     except Exception as e:
+    #         logger.error(f"{self.current_time} - {self.current_user} - 在 {element_name} 输入失败: {str(e)}")
+    #         self.take_screenshot(f"{element_name}_input_failed")
+    #         return False
 
-    def _take_screenshot(self, name):
-        """截图方法"""
-        try:
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{name}_{time.strftime('%Y%m%d_%H%M%S')}",
-                allure.attachment_type.PNG
-            )
-        except Exception as e:
-            logger.error(f"{self.current_time} - {self.current_user} - 截图失败: {str(e)}")
+    # def take_screenshot(self, name):
+    #     """截图方法"""
+    #     try:
+    #         allure.attach(
+    #             self.driver.get_screenshot_as_png(),
+    #             f"{name}_{time.strftime('%Y%m%d_%H%M%S')}",
+    #             allure.attachment_type.PNG
+    #         )
+    #     except Exception as e:
+    #         logger.error(f"{self.current_time} - {self.current_user} - 截图失败: {str(e)}")
 
     @allure.step("点击辅助阅卷")
     def click_auxiliary_reading(self):
         """点击辅助阅卷按钮"""
-        return self._click_element(AssistedReadPage.AUXILIARY_READING, "辅助阅卷按钮")
+        self.click_element(AssistedReadPage.AUXILIARY_READING, "辅助阅卷按钮")
 
     @allure.step("点击庭审笔录1")
     def click_court_record1(self):
         """点击庭审笔录1"""
-        return self._click_element(AssistedReadPage.COURT_RECORD, "庭审笔录1")
+        self.click_element(AssistedReadPage.COURT_RECORD, "庭审笔录1")
 
     @allure.step("设为庭审笔录")
     def set_as_court_record(self):
         """设为庭审笔录"""
-        return self._click_element(AssistedReadPage.SET_RECORD, "设为庭审笔录按钮")
+        self.click_element(AssistedReadPage.SET_RECORD, "设为庭审笔录按钮")
 
     @allure.step("输入处理意见")
     def enter_opinions(self, opinion1="无意见1", opinion2="无意见2"):
         """输入处理意见"""
         try:
-            if not self._input_text(AssistedReadPage.OPINION1, opinion1, "审查意见"):
-                return False
-            if not self._input_text(AssistedReadPage.OPINION2, opinion2, "裁判思路"):
-                return False
+            self.input_text(AssistedReadPage.OPINION1, opinion1, "审查意见")
+            time.sleep(1)
+            self.input_text(AssistedReadPage.OPINION2, opinion2, "裁判思路")
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 输入处理意见失败: {str(e)}")
-            self._take_screenshot("enter_opinions_failed")
+            self.take_screenshot("enter_opinions_failed")
             return False
 
     @allure.step("确认设置")
     def confirm_settings(self):
         """确认设置"""
-        return self._click_element(AssistedReadPage.CONFIRM_BUTTON, "确认按钮")
+        return self.click_element(AssistedReadPage.CONFIRM_BUTTON, "确认按钮")
 
     @allure.step("取消设置庭审笔录")
     def cancel_set_record(self):
@@ -136,7 +136,7 @@ class AssistedReadUtils:
                     time.sleep(2)
                 except Exception as e:
                     logger.error(f"{self.current_time} - {self.current_user} - 点击庭审笔录1失败: {str(e)}")
-                    self._take_screenshot("click_court_record_failed")
+                    self.take_screenshot("click_court_record_failed")
                     return False
 
             # 2. 点击取消设置按钮
@@ -160,7 +160,7 @@ class AssistedReadUtils:
                     except Exception as je:
                         logger.error(
                             f"{self.current_time} - {self.current_user} - JavaScript点击取消按钮也失败: {str(je)}")
-                        self._take_screenshot("click_cancel_button_failed")
+                        self.take_screenshot("click_cancel_button_failed")
                         return False
                 time.sleep(2)
 
@@ -185,7 +185,7 @@ class AssistedReadUtils:
                     except Exception as je:
                         logger.error(
                             f"{self.current_time} - {self.current_user} - JavaScript点击确认按钮也失败: {str(je)}")
-                        self._take_screenshot("click_confirm_button_failed")
+                        self.take_screenshot("click_confirm_button_failed")
                         return False
 
             time.sleep(2)
@@ -202,7 +202,7 @@ class AssistedReadUtils:
             - 当前URL: {self.driver.current_url}
             """
             logger.error(error_msg)
-            self._take_screenshot("cancel_set_record_failed")
+            self.take_screenshot("cancel_set_record_failed")
             return False
 
     # def _handle_click_error(self, element_name, error):
@@ -216,21 +216,20 @@ class AssistedReadUtils:
     #     - 当前URL: {self.driver.current_url}
     #     """
     #     logger.error(error_msg)
-    #     self._take_screenshot(f"click_{element_name}_failed")
+    #     self.take_screenshot(f"click_{element_name}_failed")
 
     @allure.step("下载PDF")
     def download_pdf(self):
         """下载PDF文件"""
         try:
-            if not self._click_element(AssistedReadPage.DOWNLOAD_BUTTON, "下载按钮"):
-                return False
-            if not self._click_element(AssistedReadPage.PDF_DOWNLOAD_OPTION, "PDF下载选项"):
-                return False
+            self.click_element(AssistedReadPage.DOWNLOAD_BUTTON, "下载按钮")
+            time.sleep(1)
+            self.click_element(AssistedReadPage.PDF_DOWNLOAD_OPTION, "PDF下载选项")
             time.sleep(3)  # 等待下载完成
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 下载PDF失败: {str(e)}")
-            self._take_screenshot("download_pdf_failed")
+            self.take_screenshot("download_pdf_failed")
             return False
 
     @allure.step("添加庭审笔录2为证据")
@@ -238,27 +237,22 @@ class AssistedReadUtils:
         """添加庭审笔录2为证据"""
         try:
             # 点击庭审笔录2
-            if not self._click_element(AssistedReadPage.COURT_RECORD2, "庭审笔录2"):
-                return False
+            self.click_element(AssistedReadPage.COURT_RECORD2, "庭审笔录2")
 
             # 点击添加为证据按钮
-            if not self._click_element(AssistedReadPage.ADD_EVIDENCE_BUTTON, "添加为证据按钮"):
-                return False
+            self.click_element(AssistedReadPage.ADD_EVIDENCE_BUTTON, "添加为证据按钮")
 
             # 选择目录
-            if not self._click_element(AssistedReadPage.DIRECTORY_DROPDOWN, "目录下拉框"):
-                return False
-            if not self._click_element(AssistedReadPage.COURT_MATERIALS_OPTION, "法庭材料选项"):
-                return False
+            self.click_element(AssistedReadPage.DIRECTORY_DROPDOWN, "目录下拉框")
+            self.click_element(AssistedReadPage.COURT_MATERIALS_OPTION, "法庭材料选项")
 
             # 确认添加
-            if not self._click_element(AssistedReadPage.CONFIRM_ADD_EVIDENCE, "确认添加按钮"):
-                return False
+            self.click_element(AssistedReadPage.CONFIRM_ADD_EVIDENCE, "确认添加按钮")
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 添加庭审笔录2为证据失败: {str(e)}")
-            self._take_screenshot("add_court_record2_failed")
+            self.take_screenshot("add_court_record2_failed")
             return False
 
     @allure.step("添加庭审笔录3为证据")
@@ -266,29 +260,24 @@ class AssistedReadUtils:
         """添加庭审笔录3为证据"""
         try:
             # 选择庭审笔录3
-            if not self._click_element(AssistedReadPage.COURT_RECORD3_CHECKBOX, "庭审笔录3复选框"):
-                return False
+            self.click_element(AssistedReadPage.COURT_RECORD3_CHECKBOX, "庭审笔录3复选框")
 
             # 点击添加为证据按钮
-            if not self._click_element(AssistedReadPage.EVIDENCE_ADD_BUTTON, "添加为证据按钮"):
-                return False
+            self.click_element(AssistedReadPage.EVIDENCE_ADD_BUTTON, "添加为证据按钮")
 
             # 点击目录下拉框
-            if not self._click_element(AssistedReadPage.DIRECTORY_DROPDOWN2, "目录下拉框"):
-                return False
+            self.click_element(AssistedReadPage.DIRECTORY_DROPDOWN2, "目录下拉框")
 
             # 选择上诉人选项
-            if not self._click_element(AssistedReadPage.APPELLANT_OPTION, "上诉人选项"):
-                return False
+            self.click_element(AssistedReadPage.APPELLANT_OPTION, "上诉人选项")
 
             # 点击确认添加按钮
-            if not self._click_element(AssistedReadPage.CONFIRM_EVIDENCE_BUTTON, "确认添加按钮"):
-                return False
+            self.click_element(AssistedReadPage.CONFIRM_EVIDENCE_BUTTON, "确认添加按钮")
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 添加庭审笔录3为证据失败: {str(e)}")
-            self._take_screenshot("add_court_record3_failed")
+            self.take_screenshot("add_court_record3_failed")
             return False
 
     @allure.step("检查证据引用功能")
@@ -296,25 +285,21 @@ class AssistedReadUtils:
         """检查证据引用功能"""
         try:
             # 点击证据引用标签页
-            if not self._click_element(AssistedReadPage.EVIDENCE_REFERENCE_TAB, "证据引用标签页"):
-                return False
+            self.click_element(AssistedReadPage.EVIDENCE_REFERENCE_TAB, "证据引用标签页")
 
             # 点击刷新按钮
-            if not self._click_element(AssistedReadPage.REFRESH_BUTTON, "刷新按钮"):
-                return False
+            self.click_element(AssistedReadPage.REFRESH_BUTTON, "刷新按钮")
 
             # 点击查看详情按钮
-            if not self._click_element(AssistedReadPage.EVIDENCE_RECORD_DETAIL, "证据记录详情"):
-                return False
+            self.click_element(AssistedReadPage.EVIDENCE_RECORD_DETAIL, "证据记录详情")
 
             # 点击关闭详情按钮
-            if not self._click_element(AssistedReadPage.CLOSE_DETAIL_BUTTON, "关闭详情按钮"):
-                return False
+            self.click_element(AssistedReadPage.CLOSE_DETAIL_BUTTON, "关闭详情按钮")
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 检查证据引用功能失败: {str(e)}")
-            self._take_screenshot("check_evidence_reference_failed")
+            self.take_screenshot("check_evidence_reference_failed")
             return False
 
     @allure.step("执行双屏阅卷")
@@ -322,29 +307,25 @@ class AssistedReadUtils:
         """执行双屏阅卷功能"""
         try:
             # 选择庭审笔录2
-            if not self._click_element(AssistedReadPage.RECORD2_CHECKBOX, "庭审笔录2复选框"):
-                return False
+            self.click_element(AssistedReadPage.RECORD2_CHECKBOX, "庭审笔录2复选框")
 
             # 选择庭审笔录3
-            if not self._click_element(AssistedReadPage.RECORD3_CHECKBOX, "庭审笔录3复选框"):
-                return False
+            self.click_element(AssistedReadPage.RECORD3_CHECKBOX, "庭审笔录3复选框")
 
             # 点击双屏阅卷按钮
-            if not self._click_element(AssistedReadPage.DUAL_SCREEN_READING_BUTTON, "双屏阅卷按钮"):
-                return False
+            self.click_element(AssistedReadPage.DUAL_SCREEN_READING_BUTTON, "双屏阅卷按钮")
 
             time.sleep(3)  # 可视化等待
 
             # 关闭双屏阅卷窗口
-            if not self._click_element(AssistedReadPage.CLOSE_DUAL_SCREEN_BUTTON, "关闭双屏阅卷按钮"):
-                return False
+            self.click_element(AssistedReadPage.CLOSE_DUAL_SCREEN_BUTTON, "关闭双屏阅卷按钮")
 
             time.sleep(2)
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 执行双屏阅卷失败: {str(e)}")
-            self._take_screenshot("perform_dual_screen_reading_failed")
+            self.take_screenshot("perform_dual_screen_reading_failed")
             return False
 
     @allure.step("选择第三方")
@@ -354,19 +335,17 @@ class AssistedReadUtils:
             time.sleep(2)
 
             # 点击上诉人下拉框
-            if not self._click_element(AssistedReadPage.APPELLANT_SELECTOR, "上诉人下拉框"):
-                return False
+            self.click_element(AssistedReadPage.APPELLANT_SELECTOR, "上诉人下拉框")
 
             time.sleep(1)
 
             # 选择第三方选项
-            if not self._click_element(AssistedReadPage.THIRD_PARTY_OPTION, "第三方选项"):
-                return False
+            self.click_element(AssistedReadPage.THIRD_PARTY_OPTION, "第三方选项")
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 选择第三方失败: {str(e)}")
-            self._take_screenshot("select_third_party_failed")
+            self.take_screenshot("select_third_party_failed")
             return False
 
     @allure.step("刷新并取消选中庭审笔录3")
@@ -374,21 +353,19 @@ class AssistedReadUtils:
         """刷新并取消选中庭审笔录3"""
         try:
             # 点击刷新按钮
-            if not self._click_element(AssistedReadPage.REFRESH_BUTTON, "刷新按钮"):
-                return False
+            self.click_element(AssistedReadPage.REFRESH_BUTTON, "刷新按钮")
 
             time.sleep(2)
 
             # 定位庭审笔录3复选框并点击取消选中
-            if not self._click_element(AssistedReadPage.RECORD4_CHECKBOX, "庭审笔录3复选框"):
-                return False
+            self.click_element(AssistedReadPage.RECORD4_CHECKBOX, "庭审笔录3复选框")
 
             time.sleep(1)
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 刷新并取消选中庭审笔录3失败: {str(e)}")
-            self._take_screenshot("refresh_and_uncheck_record3_failed")
+            self.take_screenshot("refresh_and_uncheck_record3_failed")
             return False
 
     @allure.step("执行批量修改")
@@ -396,48 +373,40 @@ class AssistedReadUtils:
         """执行批量修改"""
         try:
             # 点击批量修改按钮
-            if not self._click_element(AssistedReadPage.BATCH_EDIT_BUTTON, "批量修改按钮"):
-                return False
+            self.click_element(AssistedReadPage.BATCH_EDIT_BUTTON, "批量修改按钮")
 
             time.sleep(2)
 
             # 修改证据名称
-            if not self._fill_cell_value(AssistedReadPage.EVIDENCE_NAME_CELL, "庭审笔录2修改", "证据名称"):
-                return False
+            self._fill_cell_value(AssistedReadPage.EVIDENCE_NAME_CELL, "庭审笔录2修改", "证据名称")
 
             # 选择质证类型
-            if not self._select_dropdown_option(AssistedReadPage.EVIDENCE_TYPE_CELL,
-                                                AssistedReadPage.NO_OBJECTION_OPTION):
-                return False
+            self._select_dropdown_option(AssistedReadPage.EVIDENCE_TYPE_CELL,
+                                         AssistedReadPage.NO_OBJECTION_OPTION)
 
             # 填写质证意见
-            if not self._fill_cell_js(AssistedReadPage.EVIDENCE_OPINION_CELL, "无意见", "质证意见"):
-                return False
+            self._fill_cell_js(AssistedReadPage.EVIDENCE_OPINION_CELL, "无意见", "质证意见")
 
             # 填写证明目的
-            if not self._fill_cell_js(AssistedReadPage.EVIDENCE_PURPOSE_CELL, "无目的", "证明目的"):
-                return False
+            self._fill_cell_js(AssistedReadPage.EVIDENCE_PURPOSE_CELL, "无目的", "证明目的")
 
             # 选择证件类型
-            if not self._select_dropdown_option(AssistedReadPage.EVIDENCE_DOCUMENT_TYPE_CELL,
-                                                AssistedReadPage.PHYSICAL_EVIDENCE_OPTION):
-                return False
+            self._select_dropdown_option(AssistedReadPage.EVIDENCE_DOCUMENT_TYPE_CELL,
+                                         AssistedReadPage.PHYSICAL_EVIDENCE_OPTION)
 
             # 选择证据形式
-            if not self._select_dropdown_option(AssistedReadPage.EVIDENCE_FORM_CELL,
-                                                AssistedReadPage.PHOTO_EVIDENCE_OPTION):
-                return False
+            self._select_dropdown_option(AssistedReadPage.EVIDENCE_FORM_CELL,
+                                         AssistedReadPage.PHOTO_EVIDENCE_OPTION)
 
             # 点击确认修改按钮
-            if not self._click_element(AssistedReadPage.CONFIRM_BATCH_EDIT_BUTTON, "确认批量修改按钮"):
-                return False
+            self.click_element(AssistedReadPage.CONFIRM_BATCH_EDIT_BUTTON, "确认批量修改按钮")
 
             time.sleep(2)
 
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 执行批量修改失败: {str(e)}")
-            self._take_screenshot("perform_batch_edit_failed")
+            self.take_screenshot("perform_batch_edit_failed")
             return False
 
     def _fill_cell_value(self, locator, value, field_name="单元格"):
@@ -470,7 +439,7 @@ class AssistedReadUtils:
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 填写{field_name}失败: {str(e)}")
-            self._take_screenshot(f"fill_cell_value_{field_name}_failed")
+            self.take_screenshot(f"fill_cell_value_{field_name}_failed")
             return False
 
     def _select_dropdown_option(self, dropdown_locator, option_locator):
@@ -509,7 +478,7 @@ class AssistedReadUtils:
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 选择下拉选项失败: {str(e)}")
-            self._take_screenshot("select_dropdown_option_failed")
+            self.take_screenshot("select_dropdown_option_failed")
             return False
 
     def _fill_cell_js(self, locator, value, field_name="单元格"):
@@ -550,7 +519,7 @@ class AssistedReadUtils:
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 填写{field_name}失败: {str(e)}")
-            self._take_screenshot(f"fill_cell_js_{field_name}_failed")
+            self.take_screenshot(f"fill_cell_js_{field_name}_failed")
             return False
 
     # @staticmethod

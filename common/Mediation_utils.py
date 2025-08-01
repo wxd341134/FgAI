@@ -3,47 +3,18 @@ import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 from pages.Mediation_page import MediationPage
 
 logger = Logger().get_logger()
 
 
-class MediationUtils:
+class MediationUtils(CommonUtils):
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
-
-    def click_element(self, locator, element_name):
-        """点击元素的通用方法"""
-        try:
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            element.click()
-            logger.info(f"点击 {element_name} 成功")
-        except Exception as e:
-            logger.error(f"点击 {element_name} 失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{element_name}点击失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
-
-    def input_text(self, locator, text, element_name):
-        """输入文本的通用方法"""
-        try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            element.clear()
-            element.send_keys(text)
-            logger.info(f"在 {element_name} 中输入文本 '{text}' 成功")
-        except Exception as e:
-            logger.error(f"在 {element_name} 中输入文本失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"{element_name}输入失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
 
     def perform_mediation_operations(self):
         """执行调节相关操作"""

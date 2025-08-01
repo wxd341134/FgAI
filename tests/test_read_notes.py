@@ -25,7 +25,6 @@ class TestReadNotes:
             # 初始化工具类
             self.read_notes = ReadNotesUtils(self.driver)
             logger.info("阅卷笔记工具类初始化完成")
-
             yield
             logger.info("测试后置操作完成")
 

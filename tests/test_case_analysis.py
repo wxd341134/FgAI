@@ -9,7 +9,7 @@ logger = Logger().get_logger()
 @allure.epic("案件分析")
 @allure.feature("案件分析功能")
 @pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture
-class TestCaseAnalysis():
+class TestCaseAnalysis:
     """案件分析测试类"""
 
     @pytest.fixture(autouse=True)

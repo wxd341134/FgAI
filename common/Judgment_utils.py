@@ -6,12 +6,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from pages.Judgment_page import JudgmentPage
 from utils.common import get_project_root
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 
 logger = Logger().get_logger()
 
 
-class JudgmentUtils:
+class JudgmentUtils(CommonUtils):
     """判决书功能操作工具类"""
 
     def __init__(self, driver):
@@ -22,25 +23,25 @@ class JudgmentUtils:
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
 
-    def click_element(self, locator, element_name):
-        """
-        点击元素的通用方法
-        :param locator: 元素定位器
-        :param element_name: 元素名称
-        """
-        try:
-            logger.info(f"尝试点击元素: {element_name}")
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            element.click()
-            logger.info(f"成功点击元素: {element_name}")
-        except Exception as e:
-            logger.error(f"点击元素失败 {element_name}: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"点击{element_name}失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
+    # def click_element(self, locator, element_name):
+    #     """
+    #     点击元素的通用方法
+    #     :param locator: 元素定位器
+    #     :param element_name: 元素名称
+    #     """
+    #     try:
+    #         logger.info(f"尝试点击元素: {element_name}")
+    #         element = self.wait.until(EC.element_to_be_clickable(locator))
+    #         element.click()
+    #         logger.info(f"成功点击元素: {element_name}")
+    #     except Exception as e:
+    #         logger.error(f"点击元素失败 {element_name}: {str(e)}")
+    #         allure.attach(
+    #             self.driver.get_screenshot_as_png(),
+    #             f"点击{element_name}失败截图",
+    #             allure.attachment_type.PNG
+    #         )
+    #         raise
 
     def enter_judgment(self):
         """进入判决书"""

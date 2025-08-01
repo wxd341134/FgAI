@@ -11,7 +11,7 @@ logger = Logger().get_logger()
 @allure.epic("辅助阅卷")
 @allure.feature("辅助阅卷模块")
 @pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture
-class TestAssistedReading():
+class TestAssistedReading:
     """辅助阅卷测试类"""
 
     CURRENT_TIME = "2025-07-25 08:00:26"
@@ -76,83 +76,79 @@ class TestAssistedReading():
             # 1. 点击辅助阅卷
             with allure.step("点击辅助阅卷"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤1: 点击辅助阅卷按钮")
-                assert self.assisted_page.click_auxiliary_reading()
+                self.assisted_page.click_auxiliary_reading()
                 self._take_screenshot("step1_auxiliary_reading_clicked")
 
             # 2. 点击庭审笔录1
             with allure.step("点击庭审笔录1"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤2: 点击庭审笔录1")
-                assert self.assisted_page.click_court_record1()
+                self.assisted_page.click_court_record1()
                 self._take_screenshot("step2_court_record1_clicked")
 
             # 3. 设置庭审笔录并输入处理意见
             with allure.step("设置庭审笔录并输入处理意见"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤3: 设置庭审笔录并输入处理意见")
-                assert self.assisted_page.set_as_court_record()
-                assert self.assisted_page.enter_opinions("无审查意见", "无裁判思路")
-                assert self.assisted_page.confirm_settings()
+                self.assisted_page.set_as_court_record()
+                self.assisted_page.enter_opinions("无审查意见", "无裁判思路")
+                self.assisted_page.confirm_settings()
                 self._take_screenshot("step3_set_court_record_complete")
 
             # 4. 取消设置庭审笔录
             with allure.step("取消设置庭审笔录"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤4: 取消设置庭审笔录")
-                assert self.assisted_page.cancel_set_record()
+                self.assisted_page.cancel_set_record()
                 self._take_screenshot("step4_cancel_set_record_complete")
 
             # 5. 下载PDF
             with allure.step("下载笔录PDF"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤5: 下载笔录PDF")
-                assert self.assisted_page.download_pdf()
+                self.assisted_page.download_pdf()
                 self._take_screenshot("step5_pdf_download_complete")
 
             # 6. 添加庭审笔录2为证据
             with allure.step("添加庭审笔录2为证据"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤6: 添加庭审笔录2为证据")
-                assert self.assisted_page.add_court_record2_as_evidence()
+                self.assisted_page.add_court_record2_as_evidence()
                 self._take_screenshot("step6_add_evidence2_complete")
 
             # 7. 将庭审笔录3添加为证据
             with allure.step("将庭审笔录3添加为证据"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤7: 添加庭审笔录3为证据")
-                assert self.assisted_page.add_court_record3_as_evidence()
+                self.assisted_page.add_court_record3_as_evidence()
                 self._take_screenshot("step7_add_evidence3_complete")
 
             # 8. 证据引用功能
             with allure.step("测试证据引用功能"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤8: 测试证据引用功能")
-                assert self.assisted_page.check_evidence_reference()
+                self.assisted_page.check_evidence_reference()
                 self._take_screenshot("step8_evidence_reference_complete")
 
             # 9. 双屏阅卷功能
             with allure.step("测试双屏阅卷功能"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤9: 测试双屏阅卷功能")
-                assert self.assisted_page.perform_dual_screen_reading()
+                self.assisted_page.perform_dual_screen_reading()
                 self._take_screenshot("step9_dual_screen_reading_complete")
 
             # 10. 选择上诉人为第三人
             with allure.step("选择上诉人为第三人"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤10: 选择上诉人为第三人")
-                assert self.assisted_page.select_third_party()
+                self.assisted_page.select_third_party()
                 self._take_screenshot("step10_select_third_party_complete")
 
             # 11. 刷新并取消选中庭审笔录3
             with allure.step("刷新并取消选中庭审笔录3"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤11: 刷新并取消选中庭审笔录3")
-                assert self.assisted_page.refresh_and_uncheck_record3()
+                self.assisted_page.refresh_and_uncheck_record3()
                 self._take_screenshot("step11_refresh_uncheck_record3_complete")
 
             # 12. 批量修改功能
             with allure.step("执行批量修改功能"):
                 logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 步骤12: 执行批量修改功能")
-                assert self.assisted_page.perform_batch_edit()
+                self.assisted_page.perform_batch_edit()
                 self._take_screenshot("step12_batch_edit_complete")
 
             logger.info(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 辅助阅卷测试执行完成")
 
-        except AssertionError as ae:
-            logger.error(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 断言失败: {str(ae)}")
-            self._take_screenshot("assertion_failed")
-            raise
         except Exception as e:
             logger.error(f"{self.CURRENT_TIME} - {self.CURRENT_USER} - 测试执行失败: {str(e)}")
             self._take_screenshot("test_failed")

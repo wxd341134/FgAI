@@ -5,50 +5,18 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.case_analysis_page import CaseAnalysisPage
+from utils.common2 import CommonUtils
 from utils.logger import Logger
 
 logger = Logger().get_logger()
 
 
-class CaseAnalysisUtils:
+class CaseAnalysisUtils(CommonUtils):
     """案件分析工具类"""
 
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
-
-    def click_element(self, locator, element_name):
-        """点击元素的通用方法"""
-        try:
-            logger.info(f"尝试点击元素: {element_name}")
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            element.click()
-            logger.info(f"成功点击元素: {element_name}")
-        except Exception as e:
-            logger.error(f"点击元素失败 {element_name}: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                f"点击{element_name}失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
-
-    def input_text(self, locator, text, element_name):
-        """输入文本的通用方法"""
-        try:
-            logger.info(f"尝试在{element_name}中输入文本: {text}")
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            element.clear()
-            element.send_keys(text)
-            logger.info(f"成功输入文本: {text}")
-        except Exception as e:
-            logger.error(f"输入文本失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "输入文本失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
 
     @allure.step("进入案件分析")
     def enter_case_analysis(self):
