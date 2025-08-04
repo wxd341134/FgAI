@@ -3,7 +3,7 @@ import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.statute_search_page import StatuteSearchPage
-from utils.common2 import CommonUtils
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 
 logger = Logger().get_logger()

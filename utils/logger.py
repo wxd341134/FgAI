@@ -52,7 +52,7 @@ class Logger:
         self.logger.addHandler(console_handler)
 
         # 自动清理过期日志
-        self.clean_old_logs(log_dir, 7)  # 保留最近7天的日志
+        self.clean_old_logs(log_dir, 3)  # 保留最近3天的日志
 
         # 标记为已初始化
         Logger._initialized = True

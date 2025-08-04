@@ -3,7 +3,6 @@ import pytest
 import allure
 from common.Judgment_utils import JudgmentUtils
 from utils.logger import Logger
-from tests.base_test import BaseTest
 
 logger = Logger().get_logger()
 

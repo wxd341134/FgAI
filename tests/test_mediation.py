@@ -1,7 +1,6 @@
 import pytest
 import allure
 from common.Mediation_utils import MediationUtils
-from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()

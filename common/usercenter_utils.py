@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from pages.usercenter_page import UserCenterPage
-from utils.common2 import CommonUtils
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 
 

@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
-from utils.common2 import CommonUtils
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 from pages.caseMg_page import CaseMgPage
 
@@ -22,14 +22,6 @@ class CaseMgUtils(CommonUtils):
         self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
-
-    def _take_screenshot(self, name):
-        """统一的截图方法"""
-        allure.attach(
-            self.driver.get_screenshot_as_png(),
-            name=name,
-            attachment_type=allure.attachment_type.PNG
-        )
 
     @allure.step("添加案件")
     def add_case(self, case_name, case_number):
@@ -69,7 +61,6 @@ class CaseMgUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 添加案件失败: {str(e)}")
-            self._take_screenshot("add_case_failed")
             return False
 
     @allure.step("编辑案件: {case_name}")
@@ -123,7 +114,6 @@ class CaseMgUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 编辑案件失败: {str(e)}")
-            self._take_screenshot("edit_case_failed")
             return False
 
     @allure.step("删除案件: {case_name}")
@@ -144,5 +134,4 @@ class CaseMgUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 删除案件失败: {str(e)}")
-            self._take_screenshot("delete_case_failed")
             return False

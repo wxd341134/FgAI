@@ -3,7 +3,6 @@ import time
 import allure
 import pytest
 from common.read_notes_utils import ReadNotesUtils
-from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()

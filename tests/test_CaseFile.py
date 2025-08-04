@@ -2,8 +2,6 @@ import os
 import pytest
 import allure
 from common.CaseFile_utils import CaseFileUtils
-from tests.base_test import BaseTest
-from utils.common import get_project_root
 from utils.logger import Logger
 
 logger = Logger().get_logger()

@@ -6,8 +6,8 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from utils.common import get_project_root
-from utils.common2 import CommonUtils
+# from utils.common import get_project_root
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 from pages.CaseFile_page import CaseFilePage
 

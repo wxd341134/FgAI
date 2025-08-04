@@ -71,17 +71,15 @@ class CommonUtils:
             raise
 
     def take_screenshot(self, name):
-        """
-        统一的截图方法
-
-        Args:
-            name: 截图名称
-        """
-        allure.attach(
-            self.driver.get_screenshot_as_png(),
-            name=name,
-            attachment_type=allure.attachment_type.PNG
-        )
+        """截图方法"""
+        try:
+            allure.attach(
+                self.driver.get_screenshot_as_png(),
+                name=name,
+                attachment_type=allure.attachment_type.PNG
+            )
+        except Exception as e:
+            logger.error(f"截图失败: {str(e)}")
 
     @staticmethod
     def load_json_data(file_path):

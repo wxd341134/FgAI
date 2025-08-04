@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from pages.search_annotations_page import SearchAnnotationsPage
-from utils.common2 import CommonUtils
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 from utils.JStextSelection import JSTextSelector
 

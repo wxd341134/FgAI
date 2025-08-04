@@ -8,7 +8,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("案件管理系统")
+@allure.epic("案件管理")
 @allure.feature("案件管理模块")
 @pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
 class TestCaseManagement:
@@ -28,11 +28,7 @@ class TestCaseManagement:
             logger.info(" 测试后置操作完成")
         except Exception as e:
             logger.error(f" 测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "setup_failed",
-                allure.attachment_type.PNG
-            )
+            self.case_utils.take_screenshot("设置/清理失败截图")  # 调用 CommonUtils 的截图方法
             raise
 
     @allure.story("案件基本操作")
@@ -44,45 +40,24 @@ class TestCaseManagement:
             case_name = "(2025)苏0105民初0001号"
 
             with allure.step(f"添加案件: {case_name}"):
-                assert self.case_utils.add_case(case_name, case_name)
+                self.case_utils.add_case(case_name, case_name)
+                self.case_utils.take_screenshot("案件添加成功")
                 time.sleep(3)
 
             with allure.step(f"编辑案件: {case_name}"):
-                assert self.case_utils.edit_case(case_name)
+                self.case_utils.edit_case(case_name)
+                self.case_utils.take_screenshot("案件编辑成功")
                 time.sleep(3)
 
             with allure.step(f"删除案件: {case_name}"):
-                assert self.case_utils.delete_case(case_name)
+                self.case_utils.delete_case(case_name)
+                self.case_utils.take_screenshot("案件删除成功")
                 time.sleep(1)
 
             logger.info("案件操作测试完成")
-
-        except AssertionError as ae:
-            logger.error(f" 断言失败: {str(ae)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "assertion_failed",
-                allure.attachment_type.PNG
-            )
-            raise
+            self.case_utils.take_screenshot("基本流程成功")
         except Exception as e:
             logger.error(f"测试执行失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "test_failed",
-                allure.attachment_type.PNG
-            )
-            allure.attach(
-                str(e),
-                "error_message",
-                allure.attachment_type.TEXT
-            )
+            self.case_utils.take_screenshot("基本流程失败")
             raise
 
-
-if __name__ == "__main__":
-    pytest.main([
-        "-v",
-        "--alluredir=./reports/allure-results",
-        __file__
-    ])

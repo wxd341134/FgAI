@@ -1,3 +1,5 @@
+import os
+
 import allure
 import pytest
 from common.archives_search_utils import ArchivesSearchUtils
@@ -30,23 +32,9 @@ class TestArchivesSearch:
 
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置/清理失败截图",
-                allure.attachment_type.PNG
-            )
-            raise
+            self.archives_search.take_screenshot("设置/清理失败截图") #调用 CommonUtils 的截图方法
 
-    def take_screenshot(self, name):
-        """截图方法"""
-        try:
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                name=name,
-                attachment_type=allure.attachment_type.PNG
-            )
-        except Exception as e:
-            logger.error(f"截图失败: {str(e)}")
+            raise
 
     @allure.story("卷宗检索功能")
     @allure.title("测试卷宗检索基本流程")
@@ -65,9 +53,24 @@ class TestArchivesSearch:
         try:
             with allure.step("执行卷宗检索基本流程"):
                 self.archives_search.perform_archives_search("判决")
-                self.take_screenshot("基本流程完成")
+                self.archives_search.take_screenshot("基本流程完成")  #调用 CommonUtils 的截图方法
 
         except Exception as e:
             logger.error(f"卷宗检索测试失败: {str(e)}")
-            self.take_screenshot("基本流程失败")
+            self.archives_search.take_screenshot("基本流程失败")
             raise
+
+# if __name__ == "__main__":
+#     print("🚀 开始运行测试...")
+#     # 获取当前文件所在目录
+#     current_dir = os.path.dirname(os.path.abspath(__file__))
+#     results_dir = os.path.join(current_dir, "allure-results")
+#     print(f"💡 当前文件: {__file__}")
+#     print(f"📁 allure-results 将生成在: {results_dir}")
+#
+#
+#     pytest.main([
+#         "-v",
+#         f"--alluredir={results_dir}",
+#         "--clean-alluredir"
+#     ])

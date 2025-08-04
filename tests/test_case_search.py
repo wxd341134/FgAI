@@ -1,7 +1,6 @@
 import pytest
 import allure
 from common.case_search_utils import CaseSearchUtils
-from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()
@@ -10,7 +9,7 @@ logger = Logger().get_logger()
 @allure.epic("辅助阅卷")
 @allure.feature("案件查询模块")
 @pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
-class TestCaseSearch():
+class TestCaseSearch:
     """案件查询测试类"""
 
     @pytest.fixture(autouse=True)

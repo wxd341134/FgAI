@@ -5,8 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from pages.Judgment_page import JudgmentPage
-from utils.common import get_project_root
-from utils.common2 import CommonUtils
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 
 logger = Logger().get_logger()
@@ -235,7 +234,7 @@ class JudgmentUtils(CommonUtils):
 
                 # 构建文件路径
                 file_path = os.path.join(
-                    get_project_root(),
+                    self.get_project_root(),
                     "test_data",
                     "(2025)苏0105民初0001号民事判决书.docx"
                 )

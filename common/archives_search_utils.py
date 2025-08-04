@@ -3,38 +3,16 @@ import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.archives_search_page import ArchivesSearchPage
-from utils.common2 import CommonUtils
+from utils.Common_utils import CommonUtils
 from utils.logger import Logger
 
 logger = Logger().get_logger()
 
-class ArchivesSearchUtils(CommonUtils):
+class ArchivesSearchUtils(CommonUtils):  # 继承父类CommonUtils，也会继承父类属性和方法
     """卷宗检索工具类"""
 
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
-
-    # def safe_click(self, locator, element_name):
-    #     """安全点击元素的方法"""
-    #     try:
-    #         element = self.wait.until(EC.element_to_be_clickable(locator))
-    #         element.click()
-    #         logger.info(f"成功点击{element_name}")
-    #     except Exception as e:
-    #         logger.error(f"点击{element_name}失败: {str(e)}")
-    #         raise
-    #
-    # def safe_input(self, locator, text, element_name):
-    #     """安全输入文本的方法"""
-    #     try:
-    #         element = self.wait.until(EC.presence_of_element_located(locator))
-    #         element.clear()
-    #         element.send_keys(text)
-    #         logger.info(f"成功在{element_name}中输入文本: {text}")
-    #     except Exception as e:
-    #         logger.error(f"在{element_name}中输入文本失败: {str(e)}")
-    #         raise
+        super().__init__(driver)  # ✅ 调用父类初始化
 
     @allure.step("执行完整的卷宗检索流程")
     def perform_archives_search(self, keyword="判决"):
@@ -115,9 +93,4 @@ class ArchivesSearchUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"卷宗检索流程执行失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
             raise

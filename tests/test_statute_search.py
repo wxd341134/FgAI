@@ -1,7 +1,6 @@
 import allure
 import pytest
 from common.statute_search_utils import StatuteSearchUtils
-from tests.base_test import BaseTest
 from utils.logger import Logger
 
 logger = Logger().get_logger()
