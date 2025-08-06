@@ -29,23 +29,19 @@ class TestReadNotes:
 
         except Exception as e:
             logger.error(f"阅卷笔记初始化失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "初始化失败截图",
-                allure.attachment_type.PNG
-            )
+            self.read_notes.take_screenshot("设置/清理失败截图")  # 调用 CommonUtils 的截图方法
             raise
 
-    def take_screenshot(self, name):
-        """添加截图方法，用于在关键步骤或失败时截图"""
-        try:
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                name,
-                allure.attachment_type.PNG
-            )
-        except Exception as e:
-            logger.error(f"截图失败: {str(e)}")
+    # def take_screenshot(self, name):
+    #     """添加截图方法，用于在关键步骤或失败时截图"""
+    #     try:
+    #         allure.attach(
+    #             self.driver.get_screenshot_as_png(),
+    #             name,
+    #             allure.attachment_type.PNG
+    #         )
+    #     except Exception as e:
+    #         logger.error(f"截图失败: {str(e)}")
 
     @allure.story("判决书文档操作")
     @allure.title("测试判决书查看和下载功能")
@@ -66,12 +62,12 @@ class TestReadNotes:
                 self.read_notes.open_reading_notes()
                 logger.info("阅卷笔记页面已打开")
                 self.read_notes.operate_judgment_doc()
-                self.take_screenshot("判决书操作完成")
+                self.read_notes.take_screenshot("判决书操作完成")
 
             logger.info("判决书操作测试完成")
         except Exception as e:
             logger.error(f"判决书操作测试失败: {str(e)}")
-            self.take_screenshot("判决书操作失败")
+            self.read_notes.take_screenshot("判决书操作失败")
             raise
 
     @allure.story("证据引用功能")
@@ -91,12 +87,12 @@ class TestReadNotes:
         try:
             with allure.step("执行证据引用操作"):
                 self.read_notes.operate_evidence_reference()
-                self.take_screenshot("证据引用操作完成")
+                self.read_notes.take_screenshot("证据引用操作完成")
 
             logger.info("证据引用测试完成")
         except Exception as e:
             logger.error(f"证据引用测试失败: {str(e)}")
-            self.take_screenshot("证据引用失败")
+            self.read_notes.take_screenshot("证据引用操作失败")
             raise
 
     @allure.story("查找替换功能")
@@ -115,16 +111,16 @@ class TestReadNotes:
         try:
             with allure.step("执行查找替换操作"):
                 self.read_notes.search_and_replace("号码", "号码")
-                self.take_screenshot("查找替换操作")
+                self.read_notes.take_screenshot("查找替换操作")
 
             with allure.step("保存更改"):
                 self.read_notes.save_notes()
-                self.take_screenshot("保存完成")
+                self.read_notes.take_screenshot("保存完成")
 
             logger.info("查找替换测试完成")
         except Exception as e:
             logger.error(f"查找替换测试失败: {str(e)}")
-            self.take_screenshot("查找替换失败")
+            self.read_notes.take_screenshot("查找替换失败")
             raise
 
     @allure.story("笔记导出功能")
@@ -141,12 +137,12 @@ class TestReadNotes:
         try:
             with allure.step("导出笔记"):
                 self.read_notes.export_notes()
-                self.take_screenshot("导出完成")
+                self.read_notes.take_screenshot("导出完成")
 
             logger.info("笔记导出测试完成")
         except Exception as e:
             logger.error(f"笔记导出测试失败: {str(e)}")
-            self.take_screenshot("导出失败")
+            self.read_notes.take_screenshot("导出失败")
             raise
 
     @allure.story("文本格式化功能")
@@ -191,16 +187,16 @@ class TestReadNotes:
             with allure.step("选中文本并点击AI智能问答和构成要件"):
                 # 选中文本并使用AI智能问答
                 self.read_notes.select_text_and_use_ai_qa("万家新城内")
-                self.take_screenshot("AI智能问答和构成要件")
+                self.read_notes.take_screenshot("AI智能问答和构成要件")
 
             with allure.step("验证弹框已关闭"):
                 # 验证弹框已关闭，可以添加相应的验证逻辑
                 time.sleep(1)
-                self.take_screenshot("AI智能问答完成")
+                self.read_notes.take_screenshot("AI智能问答完成")
 
             logger.info("文本选择和AI智能问答测试完成")
         except Exception as e:
             logger.error(f"文本选择和AI智能问答测试失败: {str(e)}")
-            self.take_screenshot("AI智能问答失败")
+            self.read_notes.take_screenshot("AI智能问答失败")
             raise
 

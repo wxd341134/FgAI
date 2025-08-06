@@ -18,8 +18,7 @@ class CaseFileUtils(CommonUtils):
     """卷宗上传和目录操作工具类"""
 
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
         self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
@@ -49,7 +48,6 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - ZIP文件上传失败: {str(e)}")
-            self.take_screenshot("zip_upload_failed")
             raise
 
     @allure.step("上传单个文件")
@@ -58,7 +56,7 @@ class CaseFileUtils(CommonUtils):
         try:
             # 构造文件路径
             docx_file = "法官AI助手安装文档.docx"
-            file_path = os.path.join(get_project_root(), "test_data", docx_file)
+            file_path = os.path.join(self.get_project_root(), "test_data", docx_file)
 
             # 点击上传单个文件按钮
             self.click_element(CaseFilePage.UPLOAD_SINGLE_BUTTON, "上传单个文件按钮")
@@ -75,7 +73,6 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 单个文件上传失败: {str(e)}")
-            self.take_screenshot("single_file_upload_failed")
             raise
 
     @allure.step("创建目录: {dir_name}")
@@ -108,7 +105,6 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 创建目录失败: {str(e)}")
-            self.take_screenshot("create_directory_failed")
             return False
 
     @allure.step("删除目录: {dir_name}")
@@ -129,7 +125,6 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 删除目录失败: {str(e)}")
-            self.take_screenshot("delete_directory_failed")
             return False
 
     @allure.step("批量删除目录")
@@ -157,7 +152,6 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 批量删除目录失败: {str(e)}")
-            self.take_screenshot("batch_delete_failed")
             return False
 
     @allure.step("执行完整的卷宗上传流程")
@@ -191,7 +185,6 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 卷宗上传流程执行失败: {str(e)}")
-            self.take_screenshot("upload_workflow_failed")
             return False
 
     @allure.step("执行完整的目录操作流程")
@@ -219,5 +212,4 @@ class CaseFileUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 目录操作流程执行失败: {str(e)}")
-            self.take_screenshot("directory_workflow_failed")
             return False

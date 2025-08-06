@@ -26,11 +26,7 @@ class TestJudgment:
             logger.info("测试后置操作完成")
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置或清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("设置/清理失败截图")
             raise
 
     @allure.feature("笔录模块")
@@ -77,11 +73,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"笔录基本功能测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("笔录模块功能失败截图")
             raise
 
 
@@ -105,11 +97,7 @@ class TestJudgment:
     #
     #     except Exception as e:
     #         logger.error(f"判决书对比测试失败: {str(e)}")
-    #         allure.attach(
-    #             self.driver.get_screenshot_as_png(),
-    #             "测试失败截图",
-    #             allure.attachment_type.PNG
-    #         )
+    #         self.judgment_utils.take_screenshot("判决书对比失败截图")
     #         raise
 
     @allure.feature("笔录模块")
@@ -148,11 +136,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"视图操作测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("视图功能失败截图")
             raise
 
     @allure.feature("笔录模块")
@@ -195,11 +179,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"OCR功能测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("OCR功能失败截图")
             raise
 
     @allure.feature("笔录模块")
@@ -219,11 +199,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"文件操作测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("pdf下载失败截图")
             raise
 
     @allure.feature("判决书模块")
@@ -238,8 +214,6 @@ class TestJudgment:
         4. OCR操作
         """
         try:
-
-
 
             with allure.step("1. 预览判决书文档"):
                 logger.info("开始预览判决书文档")
@@ -261,11 +235,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"卷宗预览功能测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("卷宗预览功能失败截图")
             raise
 
 
@@ -296,11 +266,7 @@ class TestJudgment:
     #
     #     except Exception as e:
     #         logger.error(f"判决书导入导出测试失败: {str(e)}")
-    #         allure.attach(
-    #             self.driver.get_screenshot_as_png(),
-    #             "失败截图",
-    #             allure.attachment_type.PNG
-    #         )
+    #         self.judgment_utils.take_screenshot("判决书导入导出功能失败截图")
     #         raise
 
     @allure.feature("判决书模块")
@@ -325,11 +291,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"辅助阅卷测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("辅助阅卷失败截图")
             raise
 
     @allure.feature("判决书模块")
@@ -357,11 +319,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"法条检索测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("法条检索失败截图")
             raise
 
     @allure.feature("判决书模块")
@@ -385,11 +343,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"卷宗检索测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("卷宗检索失败截图")
             raise
 
     @allure.feature("判决书模块")
@@ -412,11 +366,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"智能问答测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("智能问答失败截图")
             raise
 
     @allure.feature("判决书模块")
@@ -445,11 +395,7 @@ class TestJudgment:
 
         except Exception as e:
             logger.error(f"损害赔偿计算器测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
+            self.judgment_utils.take_screenshot("计算器操作失败截图")
             raise
 
 

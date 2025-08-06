@@ -1,5 +1,7 @@
-import datetime
+
 import time
+from datetime import datetime
+
 import allure
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,9 +17,8 @@ class InformationExtractionUtils(CommonUtils):
     """要素提取功能操作工具类"""
 
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
-        self.current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        super().__init__(driver)  # ✅ 调用父类初始化
+        self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
     @allure.step("执行要素提取基本操作")
@@ -127,11 +128,6 @@ class InformationExtractionUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - OCR操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "OCR操作失败截图",
-                allure.attachment_type.PNG
-            )
             return False
 
     @allure.step("执行视图操作")
@@ -165,32 +161,6 @@ class InformationExtractionUtils(CommonUtils):
             logger.error(f"{self.current_time} - {self.current_user} - 视图操作失败: {str(e)}")
             return False
 
-
-
-    # def verify_ocr_content(self, expected_text="123456"):
-    #     """
-    #     验证OCR文本内容
-    #     Args:
-    #         expected_text: 期望的文本内容
-    #     """
-    #     try:
-    #         with allure.step(f"验证OCR文本内容是否为: {expected_text}"):
-    #             text_element = self.wait.until(
-    #                 EC.presence_of_element_located(InformationExtractionPage.OCR_TEXTAREA)
-    #             )
-    #             actual_text = text_element.get_attribute("value")
-    #
-    #             assert actual_text == expected_text, f"OCR文本验证失败: 期望'{expected_text}', 实际'{actual_text}'"
-    #             logger.info(f"{self.current_time} - {self.current_user} - OCR文本验证通过")
-    #             return True
-    #     except Exception as e:
-    #         logger.error(f"{self.current_time} - {self.current_user} - OCR文本验证失败: {str(e)}")
-    #         allure.attach(
-    #             self.driver.get_screenshot_as_png(),
-    #             "OCR文本验证失败截图",
-    #             allure.attachment_type.PNG
-    #         )
-    #         return False
 
     @allure.step("执行要素表操作")
     def handle_table_operations(self):

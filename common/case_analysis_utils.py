@@ -15,8 +15,8 @@ class CaseAnalysisUtils(CommonUtils):
     """案件分析工具类"""
 
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
+
 
     @allure.step("进入案件分析")
     def enter_case_analysis(self):
@@ -118,11 +118,6 @@ class CaseAnalysisUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"证据状态切换失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "状态切换失败截图",
-                allure.attachment_type.PNG
-            )
             raise
 
     @allure.step("展开收起操作")
@@ -272,9 +267,4 @@ class CaseAnalysisUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"庭审笔录操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "庭审笔录操作失败截图",
-                allure.attachment_type.PNG
-            )
             raise

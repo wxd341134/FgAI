@@ -15,10 +15,8 @@ logger = Logger().get_logger()
 
 class CaseMgUtils(CommonUtils):
     """案件管理工具类"""
-
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
         self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 

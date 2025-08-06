@@ -19,7 +19,7 @@ def run_tests():
         pytest.main([
               # f'tests/test_login.py',
               # f'tests/test_usercenter.py',
-              f'tests/test_CaseMg.py',
+              # f'tests/test_CaseMg.py',
               # f'tests/test_case_search.py',
               # f'tests/test_CaseFile.py',
               # f'tests/test_assisted_read.py',
@@ -28,7 +28,7 @@ def run_tests():
               # f'tests/test_statute_search.py',
               # f'tests/test_read_notes.py',
               # f'tests/test_judgment.py',
-              # f'tests/test_case_analysis.py',
+              f'tests/test_case_analysis.py',
             '-v',
             '--alluredir', results_dir
         ])

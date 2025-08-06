@@ -34,11 +34,7 @@ class TestPersonalCenter:
 
         except Exception as e:
             logger.error(f"{CURRENT_TIME} - {CURRENT_USER} - 测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置或清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.user_center.take_screenshot("设置/清理失败截图")
             raise
 
     @allure.story("个人中心完整流程测试")
@@ -64,29 +60,14 @@ class TestPersonalCenter:
                     "wxd341134@"
                 ), "密码修改失败"
                 logger.info(f"{CURRENT_TIME} - {CURRENT_USER} - 密码修改测试通过")
+                self.user_center.take_screenshot("基本流程成功")
 
         except AssertionError as ae:
             logger.error(f"{CURRENT_TIME} - {CURRENT_USER} - 断言失败: {str(ae)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "断言失败截图",
-                allure.attachment_type.PNG
-            )
+            self.user_center.take_screenshot("断言失败")
             raise
 
         except Exception as e:
             logger.error(f"{CURRENT_TIME} - {CURRENT_USER} - 测试执行异常: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "异常失败截图",
-                allure.attachment_type.PNG
-            )
+            self.user_center.take_screenshot("基本流程失败")
             raise
-
-
-if __name__ == "__main__":
-    pytest.main([
-        "-v",
-        "--alluredir=./allure-results",
-        "test_usercenter.py"
-    ])

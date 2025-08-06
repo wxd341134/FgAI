@@ -1,4 +1,6 @@
 import time
+from datetime import datetime
+
 import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,10 +12,8 @@ logger = Logger().get_logger()
 
 class StatuteSearchUtils(CommonUtils):
     """法条检索工具类"""
-
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
 
     @allure.step("执行完整的法条检索流程")
     def perform_statute_search(self, keyword="身份证"):
@@ -84,9 +84,4 @@ class StatuteSearchUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"法条检索流程执行失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
             raise

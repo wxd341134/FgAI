@@ -2,6 +2,7 @@ import time
 import json
 import os
 import allure
+from selenium.webdriver import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from utils.logger import Logger
@@ -32,25 +33,55 @@ class CommonUtils:
             logger.error(f"点击{element_name}失败: {str(e)}")
             raise
 
+    # def input_text(self, locator, text, element_name, clear_first=True):
+    #     """
+    #     安全输入文本的方法
+    #
+    #     Args:
+    #         locator: 元素定位器
+    #         text: 要输入的文本
+    #         element_name: 元素名称（用于日志记录）
+    #         clear_first: 是否先清除原有内容，默认为True ,Information_Extraction_utils中设置了clear_first=False
+    #     """
+    #     try:
+    #         element = self.wait.until(EC.presence_of_element_located(locator))
+    #         if clear_first:
+    #             element.clear()
+    #         element.send_keys(text)
+    #         action = "覆盖输入" if clear_first else "追加输入"
+    #         logger.info(f"在{element_name}中{action}文本: {text}")
+    #     except Exception as e:
+    #         logger.error(f"在{element_name}中输入文本失败: {str(e)}")
+    #         raise
+
+
+
     def input_text(self, locator, text, element_name, clear_first=True):
         """
-        安全输入文本的方法
-
-        Args:
-            locator: 元素定位器
-            text: 要输入的文本
-            element_name: 元素名称（用于日志记录）
-            clear_first: 是否先清除原有内容，默认为True ,Information_Extraction_utils中设置了clear_first=False
+        安全输入文本，支持 Ant Design 等复杂组件
         """
         try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
+            # 等待元素可见且可交互
+            element = self.wait.until(EC.visibility_of_element_located(locator))
+
+            # 获得焦点
+            element.click()
+
             if clear_first:
-                element.clear()
+                # 使用全选 + 删除，比 clear() 更可靠
+                element.send_keys(Keys.CONTROL + "a")  # Windows
+                # element.send_keys(Keys.COMMAND + "a")  # Mac
+                element.send_keys(Keys.DELETE)
+                # element.send_keys(Keys.BACK_SPACE)  # 双重保险
+                time.sleep(0.3)  # 给前端反应时间
+
+            # 输入新值
             element.send_keys(text)
-            action = "覆盖输入" if clear_first else "追加输入"
-            logger.info(f"在{element_name}中{action}文本: {text}")
+
+            logger.info(f"在 {element_name} 中输入文本: {text}")
+
         except Exception as e:
-            logger.error(f"在{element_name}中输入文本失败: {str(e)}")
+            logger.error(f"在 {element_name} 中输入文本失败: {str(e)}")
             raise
 
     def input_file(self, locator, file_path, element_name):

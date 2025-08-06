@@ -12,14 +12,13 @@ class UserCenterPage:
     REPORT_STATS_OPTION = (By.XPATH, "//li[contains(text(),'报表统计')]")
     DEPARTMENT_OPTION = (By.XPATH, "//div[@title='按承办部门']")
     HANDLER_OPTION = (By.XPATH, "//li[contains(text(),'按承办人')]")
-    # 1. 点击开始时间输入框
-    START_DATE_INPUT = (By.XPATH, "//input[@placeholder='开始日期']")
-    # 2. 选择开始日期：2025年7月1日
-    START_DATE_DAY = (By.XPATH, "//td[@title='2025年7月1日']//div[@class='ant-calendar-date'][normalize-space()='1']")
-    # 3. 选择结束日期：2025年7月31日
-    END_DATE_DAY = (By.XPATH, "//td[@class='ant-calendar-cell ant-calendar-in-range-cell ant-calendar-last-day-of-month']")
-    # 4. 点击确定按钮
-    CONFIRM_BUTTON_DAY = (By.XPATH, "//a[contains(text(),'确 定')]")
+
+    # 时间选择相关元素
+    START_DATE_INPUT = (By.XPATH, "//input[@placeholder='开始日期']") # 点击开始时间输入框
+    SELECT_TIME_LINK = (By.XPATH, "//a[contains(text(),'选择时间')]") #「选择时间」链接
+    CALENDAR_START_INPUT = (By.XPATH, "//div[@class='ant-calendar-date-input-wrap']//input[@placeholder='开始日期']")
+    CALENDAR_END_INPUT = (By.XPATH, "//div[@class='ant-calendar-date-input-wrap']//input[@placeholder='结束日期']")
+    CONFIRM_TIME_BUTTON = (By.XPATH, "//a[contains(text(),'确 定')]")     # 点击确定按钮
 
 
     # 1. 点击承办人下拉框

@@ -23,8 +23,7 @@ class AssistedReadUtils(CommonUtils):
     """辅助阅卷工具类"""
 
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
         self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
@@ -136,7 +135,6 @@ class AssistedReadUtils(CommonUtils):
                     time.sleep(2)
                 except Exception as e:
                     logger.error(f"{self.current_time} - {self.current_user} - 点击庭审笔录1失败: {str(e)}")
-                    self.take_screenshot("click_court_record_failed")
                     return False
 
             # 2. 点击取消设置按钮
@@ -160,7 +158,6 @@ class AssistedReadUtils(CommonUtils):
                     except Exception as je:
                         logger.error(
                             f"{self.current_time} - {self.current_user} - JavaScript点击取消按钮也失败: {str(je)}")
-                        self.take_screenshot("click_cancel_button_failed")
                         return False
                 time.sleep(2)
 
@@ -185,7 +182,6 @@ class AssistedReadUtils(CommonUtils):
                     except Exception as je:
                         logger.error(
                             f"{self.current_time} - {self.current_user} - JavaScript点击确认按钮也失败: {str(je)}")
-                        self.take_screenshot("click_confirm_button_failed")
                         return False
 
             time.sleep(2)
@@ -229,7 +225,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 下载PDF失败: {str(e)}")
-            self.take_screenshot("download_pdf_failed")
             return False
 
     @allure.step("添加庭审笔录2为证据")
@@ -252,7 +247,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 添加庭审笔录2为证据失败: {str(e)}")
-            self.take_screenshot("add_court_record2_failed")
             return False
 
     @allure.step("添加庭审笔录3为证据")
@@ -277,7 +271,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 添加庭审笔录3为证据失败: {str(e)}")
-            self.take_screenshot("add_court_record3_failed")
             return False
 
     @allure.step("检查证据引用功能")
@@ -299,7 +292,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 检查证据引用功能失败: {str(e)}")
-            self.take_screenshot("check_evidence_reference_failed")
             return False
 
     @allure.step("执行双屏阅卷")
@@ -325,7 +317,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 执行双屏阅卷失败: {str(e)}")
-            self.take_screenshot("perform_dual_screen_reading_failed")
             return False
 
     @allure.step("选择第三方")
@@ -345,7 +336,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 选择第三方失败: {str(e)}")
-            self.take_screenshot("select_third_party_failed")
             return False
 
     @allure.step("刷新并取消选中庭审笔录3")
@@ -365,7 +355,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 刷新并取消选中庭审笔录3失败: {str(e)}")
-            self.take_screenshot("refresh_and_uncheck_record3_failed")
             return False
 
     @allure.step("执行批量修改")
@@ -406,7 +395,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 执行批量修改失败: {str(e)}")
-            self.take_screenshot("perform_batch_edit_failed")
             return False
 
     def _fill_cell_value(self, locator, value, field_name="单元格"):
@@ -439,7 +427,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 填写{field_name}失败: {str(e)}")
-            self.take_screenshot(f"fill_cell_value_{field_name}_failed")
             return False
 
     def _select_dropdown_option(self, dropdown_locator, option_locator):
@@ -478,7 +465,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 选择下拉选项失败: {str(e)}")
-            self.take_screenshot("select_dropdown_option_failed")
             return False
 
     def _fill_cell_js(self, locator, value, field_name="单元格"):
@@ -519,7 +505,6 @@ class AssistedReadUtils(CommonUtils):
             return True
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 填写{field_name}失败: {str(e)}")
-            self.take_screenshot(f"fill_cell_js_{field_name}_failed")
             return False
 
     # @staticmethod

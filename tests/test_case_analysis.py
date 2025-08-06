@@ -23,11 +23,7 @@ class TestCaseAnalysis:
             logger.info("测试后置操作完成")
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置或清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.case_analysis.take_screenshot("设置/清理失败截图")
             raise
 
     @allure.story("证据状态切换")
@@ -39,11 +35,11 @@ class TestCaseAnalysis:
         try:
             with allure.step("执行证据状态切换"):
                 self.case_analysis.toggle_evidence_status()
-                # self.take_screenshot("状态切换完成")
+                self.case_analysis.take_screenshot("状态切换完成")
 
         except Exception as e:
             logger.error(f"证据状态切换测试失败: {str(e)}")
-            # self.take_screenshot("状态切换失败")
+            self.case_analysis.take_screenshot("状态切换失败")
             raise
 
     @allure.story("展开收起功能")
@@ -55,6 +51,7 @@ class TestCaseAnalysis:
                 self.case_analysis.expand_collapse_operation()
         except Exception as e:
             logger.error(f"展开收起测试失败: {str(e)}")
+            self.case_analysis.take_screenshot("展开/收起失败")
             raise
 
     @allure.story("事实描述功能")
@@ -66,24 +63,18 @@ class TestCaseAnalysis:
                 self.case_analysis.complete_fact_description()
         except Exception as e:
             logger.error(f"完善事实描述测试失败: {str(e)}")
+            self.case_analysis.take_screenshot("完善事实描述测试失败")
             raise
 
     @allure.story("庭审笔录功能")
     @allure.title("测试庭审笔录操作")
     def test_court_record(self):
         """测试庭审笔录功能"""
-        # 进入案件分析页面
-        # self.case_analysis.enter_case_analysis()
         try:
             with allure.step("执行庭审笔录操作"):
                 self.case_analysis.handle_court_record()
         except Exception as e:
             logger.error(f"庭审笔录测试失败: {str(e)}")
+            self.case_analysis.take_screenshot("庭审笔录测试失败")
             raise
 
-if __name__ == "__main__":
-    pytest.main([
-        "-v",
-        "--alluredir=./allure-results",
-        "--clean-alluredir"
-    ])

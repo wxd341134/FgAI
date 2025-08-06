@@ -24,17 +24,11 @@ class TestCaseFile:
         try:
             # 初始化工具类
             self.case_file_utils = CaseFileUtils(self.driver)
-            # 设置测试数据目录
-            # self.test_data_dir = os.path.join(self.get_project_root(), "test_data")
             yield
             logger.info("测试后置操作完成")
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置或清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.case_file_utils.take_screenshot("设置/清理失败截图")
             raise
 
     @allure.story("卷宗上传")
@@ -57,16 +51,7 @@ class TestCaseFile:
 
         except Exception as e:
             logger.error(f"卷宗上传测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
-            allure.attach(
-                str(e),
-                "错误信息",
-                allure.attachment_type.TEXT
-            )
+            self.case_file_utils.take_screenshot("卷宗上传失败截图")
             raise
 
     @allure.story("目录操作")
@@ -88,27 +73,6 @@ class TestCaseFile:
             logger.info("目录操作测试完成")
         except Exception as e:
             logger.error(f"目录操作测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
-            allure.attach(
-                str(e),
-                "错误信息",
-                allure.attachment_type.TEXT
-            )
+            self.case_file_utils.take_screenshot("目录操作失败截图")
             raise
 
-
-
-
-
-
-
-if __name__ == "__main__":
-    pytest.main([
-        "-v",
-        "--alluredir=./reports/allure-results",
-        __file__
-    ])

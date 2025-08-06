@@ -15,9 +15,9 @@ logger = Logger().get_logger()
 class CaseSearchUtils(CommonUtils):
     """案件查询工具类"""
 
+
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
         self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
@@ -27,7 +27,7 @@ class CaseSearchUtils(CommonUtils):
         """按案件编号查询"""
         try:
             # 输入案件编号
-            self.input_text(CaseSearchPage.CASE_NUMBER_INPUT, case_number, "案件编号")
+            self.input_text(CaseSearchPage.CASE_NUMBER_INPUT, case_number, "案件编号", clear_first=False)
 
             # 点击查询
             self.click_element(CaseSearchPage.SEARCH_BUTTON, "查询按钮")
@@ -37,7 +37,6 @@ class CaseSearchUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 案件编号查询失败: {str(e)}")
-            self.take_screenshot("search_by_case_number_failed")
             return False
 
     @allure.step("按判决书状态查询")
@@ -58,7 +57,6 @@ class CaseSearchUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 判决书状态查询失败: {str(e)}")
-            self.take_screenshot("search_by_judgment_status_failed")
             return False
 
     @allure.step("按承办人查询")
@@ -79,7 +77,6 @@ class CaseSearchUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 承办人查询失败: {str(e)}")
-            self.take_screenshot("search_by_handler_failed")
             return False
 
     @allure.step("重置查询条件")
@@ -94,5 +91,4 @@ class CaseSearchUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 重置查询条件失败: {str(e)}")
-            self.take_screenshot("reset_search_failed")
             return False

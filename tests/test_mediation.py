@@ -25,11 +25,7 @@ class TestMediation:
             logger.info("测试后置操作完成")
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置或清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.mediation_utils.take_screenshot("设置/清理失败截图")  # 调用 CommonUtils 的截图方法
             raise
 
     @allure.feature("调节功能")
@@ -50,10 +46,6 @@ class TestMediation:
 
         except Exception as e:
             logger.error(f"调节测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "测试失败截图",
-                allure.attachment_type.PNG
-            )
+            self.mediation_utils.take_screenshot("调解功能失败截图")
             raise
 

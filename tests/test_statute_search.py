@@ -31,23 +31,9 @@ class TestStatuteSearch():
 
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置/清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.statute_search.take_screenshot("设置/清理失败截图")  # 调用 CommonUtils 的截图方法
             raise
 
-    def take_screenshot(self, name):
-        """截图方法"""
-        try:
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                name,
-                allure.attachment_type.PNG
-            )
-        except Exception as e:
-            logger.error(f"截图失败: {str(e)}")
 
     @allure.story("法条检索")
     @allure.title("测试法条检索基本流程")
@@ -66,9 +52,10 @@ class TestStatuteSearch():
         try:
             with allure.step("执行法条检索基本流程"):
                 self.statute_search.perform_statute_search("身份证")
-                self.take_screenshot("基本流程完成")
+                self.statute_search.take_screenshot("基本流程完成")
 
         except Exception as e:
             logger.error(f"法条检索测试失败: {str(e)}")
-            self.take_screenshot("基本流程失败")
+            self.statute_search.take_screenshot("基本流程失败")
+
             raise

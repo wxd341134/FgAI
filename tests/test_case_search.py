@@ -6,7 +6,7 @@ from utils.logger import Logger
 logger = Logger().get_logger()
 
 
-@allure.epic("辅助阅卷")
+@allure.epic("案件列表")
 @allure.feature("案件查询模块")
 @pytest.mark.usefixtures("setup_class")  # ✅ 使用 conftest.py 中定义的类级 fixture,应用到整个类
 class TestCaseSearch:
@@ -31,11 +31,7 @@ class TestCaseSearch:
 
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置/清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.case_search.take_screenshot("设置/清理失败截图")
             raise
 
     @allure.story("案件查询功能")
@@ -77,33 +73,13 @@ class TestCaseSearch:
                 logger.info("最终重置完成")
 
             logger.info("案件查询测试执行完成")
+            self.case_search.take_screenshot("基本流程成功")
 
         except AssertionError as ae:
-            logger.error(f"2025-07-24 06:02:01 - wxd341134 - 断言失败: {str(ae)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "assertion_failed",
-                allure.attachment_type.PNG
-            )
+            logger.error(f"wxd341134 - 断言失败: {str(ae)}")
+            self.case_search.take_screenshot("断言失败截图")
             raise
         except Exception as e:
-            logger.error(f"2025-07-24 06:02:01 - wxd341134 - 测试执行失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "test_failed",
-                allure.attachment_type.PNG
-            )
-            allure.attach(
-                str(e),
-                "error_message",
-                allure.attachment_type.TEXT
-            )
+            logger.error(f"wxd341134 - 测试执行失败: {str(e)}")
+            self.case_search.take_screenshot("基本流程失败")
             raise
-
-
-if __name__ == "__main__":
-    pytest.main([
-        "-v",
-        "--alluredir=./reports/allure-results",
-        __file__
-    ])

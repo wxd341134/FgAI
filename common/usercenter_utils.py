@@ -1,4 +1,6 @@
 import time
+from datetime import datetime
+
 import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,11 +16,16 @@ logger = Logger().get_logger()
 class UserCenterUtils(CommonUtils):
     """个人中心相关操作工具类"""
 
+    # def __init__(self, driver):
+    #     """初始化工具类"""
+    #     self.driver = driver
+    #     self.wait = WebDriverWait(driver, 10)
+    #     self.current_time = "2025-07-28 07:58:22"
+    #     self.current_user = "wxd341134"
+
     def __init__(self, driver):
-        """初始化工具类"""
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
-        self.current_time = "2025-07-28 07:58:22"
+        super().__init__(driver)  # ✅ 调用父类初始化
+        self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.current_user = "wxd341134"
 
     @allure.step("执行报表统计操作")
@@ -73,23 +80,44 @@ class UserCenterUtils(CommonUtils):
                     "开始时间"
                 )
 
-                # 选择开始日期：2025年7月1日
+                # 选择时间
                 self.click_element(
-                    UserCenterPage.START_DATE_DAY,
-                    "2025年7月1日"
+                    UserCenterPage.SELECT_TIME_LINK,
+                    "选择时间"
                 )
                 time.sleep(1)
 
-                # 选择结束日期：2025年7月31日
+                # 选择开始时间：2025-07-01 00:00:00
                 self.click_element(
-                    UserCenterPage.END_DATE_DAY,
-                    "2025年7月31日"
+                    UserCenterPage.CALENDAR_START_INPUT,
+                    "2025-07-01 00:00:00"
                 )
+                # 使用input_text方法输入时间
+                self.input_text(
+                    UserCenterPage.CALENDAR_START_INPUT,
+                    "2025-07-01 00:00:00",
+                    "开始时间输入框",
+                )
+                logger.info("已输入开始时间: 2025-07-01 00:00:00")
+                time.sleep(1)
+
+                # 选择结束时间：2025-07-01 00:00:00
+                self.click_element(
+                    UserCenterPage.CALENDAR_END_INPUT,
+                    "2025-07-31 23:59:59"
+                )
+                # 使用input_text方法输入时间
+                self.input_text(
+                    UserCenterPage.CALENDAR_END_INPUT,
+                    "2025-07-31 23:59:59",
+                    "结束时间输入框"
+                )
+                logger.info("已输入开始时间: 2025-07-01 00:00:00")
                 time.sleep(1)
 
                 # 点击确定选择的时间
                 self.click_element(
-                    UserCenterPage.CONFIRM_BUTTON_DAY,
+                    UserCenterPage.CONFIRM_TIME_BUTTON,
                     "确定"
                 )
 
@@ -122,11 +150,6 @@ class UserCenterUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 报表统计操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "报表统计失败截图",
-                allure.attachment_type.PNG
-            )
             return False
 
     @allure.step("执行字体下载操作")
@@ -174,11 +197,6 @@ class UserCenterUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 字体下载操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "字体下载失败截图",
-                allure.attachment_type.PNG
-            )
             return False
 
     @allure.step("执行密码修改操作")
@@ -237,9 +255,4 @@ class UserCenterUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"{self.current_time} - {self.current_user} - 密码修改操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "密码修改失败截图",
-                allure.attachment_type.PNG
-            )
             return False

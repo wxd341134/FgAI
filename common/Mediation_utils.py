@@ -13,8 +13,8 @@ logger = Logger().get_logger()
 
 class MediationUtils(CommonUtils):
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
+
 
     def perform_mediation_operations(self):
         """执行调节相关操作"""
@@ -117,9 +117,4 @@ class MediationUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"调节操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "调节操作失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise

@@ -37,7 +37,7 @@ class TestArchivesSearch:
             raise
 
     @allure.story("卷宗检索功能")
-    @allure.title("测试卷宗检索基本流程")
+    @allure.title("卷宗检索基本流程")
     @allure.severity(allure.severity_level.NORMAL)
     def test_basic_archives_search(self):
         """

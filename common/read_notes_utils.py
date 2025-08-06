@@ -16,10 +16,8 @@ logger = Logger().get_logger()
 
 class ReadNotesUtils(CommonUtils):
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)  # 默认等待时间10秒
-        self.short_wait = WebDriverWait(driver, 5)  # 短等待时间5秒
-        self.long_wait = WebDriverWait(driver, 20)  # 长等待时间20秒
+        super().__init__(driver)  # ✅ 调用父类初始化
+
 
     def wait_for_element_clickable(self, locator, timeout=10, description=""):
         """
@@ -310,12 +308,12 @@ class ReadNotesUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"文本格式化操作失败: {str(e)}")
-            if hasattr(self, 'driver'):
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "操作失败截图",
-                    allure.attachment_type.PNG
-                )
+            # if hasattr(self, 'driver'):
+            #     allure.attach(
+            #         self.driver.get_screenshot_as_png(),
+            #         "操作失败截图",
+            #         allure.attachment_type.PNG
+            #     )
             raise
 
     @allure.step("选中文本并选择AI智能问答和构成要件")
@@ -389,11 +387,11 @@ class ReadNotesUtils(CommonUtils):
 
         except Exception as e:
             logger.error(f"选中文本并使用AI智能问答失败: {str(e)}")
-            if hasattr(self, 'driver'):
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "操作失败截图",
-                    allure.attachment_type.PNG
-                )
+            # if hasattr(self, 'driver'):
+            #     allure.attach(
+            #         self.driver.get_screenshot_as_png(),
+            #         "操作失败截图",
+            #         allure.attachment_type.PNG
+            #     )
             raise
 

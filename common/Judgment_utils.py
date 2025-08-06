@@ -15,12 +15,8 @@ class JudgmentUtils(CommonUtils):
     """判决书功能操作工具类"""
 
     def __init__(self, driver):
-        """
-        初始化判决书工具类
-        :param driver: WebDriver实例
-        """
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)  # ✅ 调用父类初始化
+
 
     # def click_element(self, locator, element_name):
     #     """
@@ -84,11 +80,6 @@ class JudgmentUtils(CommonUtils):
                 time.sleep(1)
             except Exception as e:
                 logger.error(f"页面跳转失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "页面跳转失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def switch_to_double_page_view(self):
@@ -144,11 +135,6 @@ class JudgmentUtils(CommonUtils):
                 time.sleep(1)
             except Exception as e:
                 logger.error(f"OCR文本编辑失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "OCR文本编辑失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def save_ocr(self):
@@ -256,11 +242,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"导入判决书失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "导入判决书失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def compare_judgments(self):
@@ -314,11 +295,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"判决书对比操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "判决书对比失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def assist_reading_operations(self):
@@ -394,11 +370,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"辅助阅卷操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "辅助阅卷操作失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def law_search_operations(self):
@@ -473,11 +444,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"法条检索操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "法条检索操作失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def dossier_search_operations(self):
@@ -541,11 +507,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"卷宗检索操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "卷宗检索操作失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def smart_qa_operations(self):
@@ -606,11 +567,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"智能问答操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "智能问答操作失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
     def damage_calculator_operations(self):
@@ -710,11 +666,6 @@ class JudgmentUtils(CommonUtils):
 
             except Exception as e:
                 logger.error(f"损害赔偿计算器操作失败: {str(e)}")
-                allure.attach(
-                    self.driver.get_screenshot_as_png(),
-                    "计算器操作失败截图",
-                    allure.attachment_type.PNG
-                )
                 raise
 
 

@@ -28,11 +28,7 @@ class TestInformationExtraction:
 
         except Exception as e:
             logger.error(f"测试前置/后置操作失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "设置或清理失败截图",
-                allure.attachment_type.PNG
-            )
+            self.info_extraction.take_screenshot("设置/清理失败截图")
             raise
 
     @allure.story("要素提取基本功能")
@@ -43,11 +39,7 @@ class TestInformationExtraction:
             assert self.info_extraction.handle_basic_operations(), "要素提取基本操作失败"
         except Exception as e:
             logger.error(f"要素提取基本功能测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.info_extraction.take_screenshot("要素提取基本操作失败截图")
             raise
 
 
@@ -60,11 +52,7 @@ class TestInformationExtraction:
             assert self.info_extraction.handle_view_operations(), "视图操作失败"
         except Exception as e:
             logger.error(f"视图操作测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.info_extraction.take_screenshot("视图操作失败截图")
             raise
 
     @allure.story("OCR功能")
@@ -75,11 +63,7 @@ class TestInformationExtraction:
             assert self.info_extraction.handle_ocr_operations(), "OCR操作失败"
         except Exception as e:
             logger.error(f"OCR功能测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.info_extraction.take_screenshot("OCR操作失败截图")
             raise
 
     @allure.story("要素表功能")
@@ -90,16 +74,6 @@ class TestInformationExtraction:
             assert self.info_extraction.handle_table_operations(), "要素表操作失败"
         except Exception as e:
             logger.error(f"要素表功能测试失败: {str(e)}")
-            allure.attach(
-                self.driver.get_screenshot_as_png(),
-                "失败截图",
-                allure.attachment_type.PNG
-            )
+            self.info_extraction.take_screenshot("要素表操作失败截图")
             raise
 
-if __name__ == "__main__":
-    pytest.main([
-        "-v",
-        "--alluredir=./allure-results",
-        "test_Information_Extraction.py"
-    ])
